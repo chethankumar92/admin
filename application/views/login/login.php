@@ -4,13 +4,13 @@
     </div>
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <form action="<?= $action ?>" id="login-form" method="<?= $method ?>">
+        <form action="<?= $action ?>" method="<?= $method ?>" autocomplete="off" data-parsley-validate>
             <div class="form-group has-feedback">
-                <input name="email" type="email" class="form-control" placeholder="Email">
+                <input name="email" type="email" class="form-control" placeholder="Email" required>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input name="password" type="password" class="form-control" placeholder="Password">
+                <input name="password" type="password" class="form-control" placeholder="Password" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">

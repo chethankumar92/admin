@@ -14,81 +14,44 @@
                 </div>
             </div>
             <div class="box-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="<?= $action ?>" method="<?= $method ?>" autocomplete="off" data-parsley-validate>
                     <fieldset>
                         <div class="form-group">
-                            <label for="inputEmail" class="col-lg-2 control-label">First name</label>
+                            <label for="first-name" class="col-lg-2 control-label">First name</label>
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" id="inputEmail" placeholder="First name">
+                                <input type="text" class="form-control" name="first-name" placeholder="First name" required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail" class="col-lg-2 control-label">Last name</label>
+                            <label for="last-name" class="col-lg-2 control-label">Last name</label>
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" id="inputEmail" placeholder="Last name">
+                                <input type="text" class="form-control" name="last-name" placeholder="Last name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                            <label for="email" class="col-lg-2 control-label">Email</label>
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                                <input type="email" class="form-control" name="email" placeholder="Email"required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputPhone" class="col-lg-2 control-label">Phone</label>
+                            <label for="phone" class="col-lg-2 control-label">Phone</label>
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+                                <input type="text" class="form-control" name="phone" placeholder="Phone">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputMobile" class="col-lg-2 control-label">Mobile</label>
+                            <label for="mobile" class="col-lg-2 control-label">Mobile</label>
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" id="inputMobile" placeholder="Mobile">
+                                <input type="text" class="form-control" name="mobile" placeholder="Mobile">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputDescription" class="col-lg-2 control-label">Description</label>
+                            <label for="description" class="col-lg-2 control-label">Description</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control" rows="3" id="inputDescription" placeholder="Description"></textarea>
+                                <textarea class="form-control" rows="3" name="description" placeholder="Description"></textarea>
                             </div>
                         </div>
-<!--                        <div class="form-group">
-                            <label class="col-lg-2 control-label">Radios</label>
-                            <div class="col-lg-10">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                        Option one is this
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                        Option two can be something else
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="select" class="col-lg-2 control-label">Selects</label>
-                            <div class="col-lg-10">
-                                <select class="form-control" id="select">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                                <br>
-                                <select multiple="" class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>-->
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
                                 <button type="reset" class="btn btn-default">Cancel</button>

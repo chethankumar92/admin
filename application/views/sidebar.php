@@ -26,7 +26,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
+            <li class="treeview <?= ($query->segments[1] === Home::class) ? "active" : "" ?>">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
@@ -34,13 +34,25 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?= site_url(Home::class) ?>"><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                    <li class="<?= ($query->uri_string === Home::class) ? "active" : "" ?>"><a href="<?= site_url(Home::class) ?>"><i class="fa fa-angle-right"></i> Dashboard</a></li>
+                </ul>
+            </li>
+            <li class="treeview <?= ($query->segments[1] === Employee::class) ? "active" : "" ?>">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Employee</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= ($query->uri_string === Employee::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(Employee::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
+                    <li class="<?= ($query->uri_string === Employee::class) ? "active" : "" ?>"><a href="<?= site_url(Employee::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
                 </ul>
             </li>
             <li class="header">LABELS</li>
-            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+            <li><a href="#"><i class="fa fa-angle-right text-red"></i> <span>Important</span></a></li>
+            <li><a href="#"><i class="fa fa-angle-right text-yellow"></i> <span>Warning</span></a></li>
+            <li><a href="#"><i class="fa fa-angle-right text-aqua"></i> <span>Information</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->

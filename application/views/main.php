@@ -40,7 +40,7 @@
                     <?= $header ?>
                     <?= $sidebar ?>
                     <?= $body ?>
-                    <?= $settings ?>
+                    <?php // $settings ?>
                     <?= $footer ?>
                 </div>
                 <!-- ./wrapper -->

@@ -35,7 +35,7 @@
                 $this->session->unset_userdata("logged_in");
                 echo json_encode(array(
                     "success" => TRUE,
-                    "url" => site_url("login"),
+                    "url" => site_url(Login::class),
                     "message" => "Logged out successfully!"
                 ));
             }
