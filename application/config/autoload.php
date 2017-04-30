@@ -90,7 +90,7 @@
       |
       |	$autoload['helper'] = array('url', 'file');
      */
-    $autoload['helper'] = array("cookie", "url", "asset");
+    $autoload['helper'] = array("cookie", "url", "asset", "random_password");
 
     /*
       | -------------------------------------------------------------------

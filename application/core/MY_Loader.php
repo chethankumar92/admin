@@ -12,7 +12,8 @@ class MY_Loader extends CI_Loader {
         'font-awesome.min',
         'ionicons.min',
         'AdminLTE/AdminLTE.min',
-        'AdminLTE/skins/_all-skins.min'
+        'AdminLTE/skins/_all-skins.min',
+        'AdminLTE/custom'
     );
     private $scripts = array(
         "AdminLTE/app.min",
@@ -37,7 +38,8 @@ class MY_Loader extends CI_Loader {
             'iCheck/icheck.min',
             'slimScroll/jquery.slimscroll.min',
             'fastclick/fastclick',
-            'parsley/parsley'
+            'parsley/parsley',
+            'bootstrap-notify/bootstrap-notify.min'
         ),
         "css" => array(
             'bootstrap/css/bootstrap.min',

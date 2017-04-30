@@ -11,6 +11,9 @@
             {
                 redirect('login');
             }
+            
+            $this->load->model('AdminUser', 'admin_user', TRUE, $this->session->userdata('logged_in_auid'));
+            $this->session->set_userdata('logged_in_user', $this->admin_user);
         }
 
     }

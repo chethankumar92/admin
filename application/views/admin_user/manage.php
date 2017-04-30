@@ -15,33 +15,20 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="employee-manage-table" data-render-url="<?= $render_url ?>" class="table table-condensed table-bordered table-responsive table-hover">
+                <table id="admin-user-manage-table" data-render-url="<?= $render_url ?>" class="table table-condensed table-bordered table-responsive table-hover">
                     <thead>
                         <tr>
-                            <th>Employee Id</th>
+                            <th>Admin User Id</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile</th>
                             <th>Phone</th>
-                            <th>Date Of Creation</th>
-                            <th>Date Of Update</th>
                             <th>Created By</th>
                             <th>Updated By</th>
+                            <th>Date Of Creation</th>
+                            <th>Date Of Update</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </tbody>
                 </table>
             </div>
             <!-- /.box-body -->

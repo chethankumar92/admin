@@ -18,38 +18,44 @@ class Login extends CI_Controller {
     }
 
     public function log_in() {
-        $this->load->library('form_validation');
+        if (!$this->input->is_ajax_request()) {
+            redirect('404');
+        }
 
+        $this->load->library('form_validation');
         $this->form_validation->set_rules("email", 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
-
         if (!$this->form_validation->run()) {
-            echo json_encode(array(
+            $this->output->set_output(json_encode(array(
                 "success" => FALSE,
+                "type" => "danger",
                 "errors" => $this->form_validation->error_array(),
                 "message" => "Invalid credentials!"
-            ));
+            )))->_display();
             exit;
         }
 
+        $this->load->helper('phpass');
+        $password = $this->input->post("password", TRUE);
+        $hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
 
-        $this->load->model('Employee', 'employee', TRUE);
-        $this->employee->setEmail($this->input->post("email"));
-        $this->employee->setPassword($this->input->post("password"));
-        if (!$this->employee->auth()) {
-            echo json_encode(array(
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setEmail($this->input->post("email", TRUE), TRUE);
+        if (!$hasher->check_password($password, $this->admin_user->getPassword())) {
+            $this->output->set_output(json_encode(array(
                 "success" => FALSE,
                 "message" => "Login failed, incorrect credentials!"
-            ));
+            )))->_display();
             exit;
         }
 
         $this->session->set_userdata("logged_in", TRUE);
-        echo json_encode(array(
+        $this->session->set_userdata("logged_in_auid", $this->admin_user->getId());
+        $this->output->set_output(json_encode(array(
             "success" => TRUE,
             "url" => site_url("home"),
             "message" => "Logged in successfully!"
-        ));
+        )))->_display();
         exit;
     }
 

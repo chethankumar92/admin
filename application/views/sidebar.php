@@ -37,16 +37,40 @@
                     <li class="<?= ($query->uri_string === Home::class) ? "active" : "" ?>"><a href="<?= site_url(Home::class) ?>"><i class="fa fa-angle-right"></i> Dashboard</a></li>
                 </ul>
             </li>
-            <li class="treeview <?= ($query->segments[1] === Employee::class) ? "active" : "" ?>">
+            <li class="treeview <?= ($query->segments[1] === AdminUsers::class) ? "active" : "" ?>">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Employee</span>
+                    <i class="fa fa-dashboard"></i> <span>Admin User</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="<?= ($query->uri_string === Employee::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(Employee::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
-                    <li class="<?= ($query->uri_string === Employee::class) ? "active" : "" ?>"><a href="<?= site_url(Employee::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
+                    <li class="<?= ($query->uri_string === AdminUsers::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(AdminUsers::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
+                    <li class="<?= ($query->uri_string === AdminUsers::class) ? "active" : "" ?>"><a href="<?= site_url(AdminUsers::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
+                </ul>
+            </li>
+            <li class="treeview <?= ($query->segments[1] === Events::class) ? "active" : "" ?>">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Event</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= ($query->uri_string === Events::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(Events::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
+                    <li class="<?= ($query->uri_string === Events::class) ? "active" : "" ?>"><a href="<?= site_url(Events::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
+                </ul>
+            </li>
+            <li class="treeview <?= ($query->segments[1] === Contacts::class) ? "active" : "" ?>">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Contact</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= ($query->uri_string === Contacts::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(Contacts::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
+                    <li class="<?= ($query->uri_string === Contacts::class) ? "active" : "" ?>"><a href="<?= site_url(Contacts::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
                 </ul>
             </li>
             <li class="header">LABELS</li>

@@ -1,5 +1,5 @@
 $(document).ready(function (e) {
-
+    $("form[data-parsley-validate]").parsley();
 });
 
 $(document).on("submit", "form[data-parsley-validate]", function (e) {
@@ -16,6 +16,16 @@ $(document).on("submit", "form[data-parsley-validate]", function (e) {
             var result = JSON.parse(response);
             if (result.success) {
                 window.location.href = result.url;
+            } else {
+                $.notify(result.message, {
+                    type: result.type || "error",
+                    allow_dismiss: true,
+                    showProgressbar: false,
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    }
+                });
             }
         }
     });
