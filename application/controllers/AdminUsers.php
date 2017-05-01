@@ -19,9 +19,29 @@ class AdminUsers extends MY_Controller {
     public function add() {
         $this->load->setTitle("Add Admin User");
         $this->load->setDescription("Provide admin user details and save");
-        $this->load->template('admin_user/add', array(
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->load->template('admin_user/add_edit_form', array(
             "action" => site_url(self::class . "/add_submit"),
-            "method" => "post"
+            "method" => "post",
+            "admin_user" => $this->admin_user
+        ));
+    }
+
+    public function edit() {
+        if (!is_numeric($this->uri->segments[3])) {
+            redirect(self::class);
+        }
+
+        $this->load->setTitle("Edit Admin User");
+        $this->load->setDescription("Provide admin user details and save");
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setId($this->uri->segments[3]);
+        $this->load->template('admin_user/add_edit_form', array(
+            "action" => site_url(self::class . "/edit_submit"),
+            "method" => "post",
+            "admin_user" => $this->admin_user
         ));
     }
 
@@ -77,6 +97,50 @@ class AdminUsers extends MY_Controller {
                     . "Regards<br>"
                     . "Mountain Trekkers");
             $this->email->send();
+        }
+
+        $this->output->set_output(json_encode(array(
+            "success" => TRUE,
+            "url" => site_url(self::class),
+            "message" => "Data saved successfully!"
+        )))->_display();
+        exit;
+    }
+
+    public function edit_submit() {
+        if (!$this->input->is_ajax_request()) {
+            redirect('404');
+        }
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('id', 'Id', 'required');
+        $this->form_validation->set_rules('first-name', 'First name', 'required|min_length[4]');
+        $this->form_validation->set_rules("email", 'Email', 'required|valid_email');
+        if (!$this->form_validation->run()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "type" => "danger",
+                "errors" => $this->form_validation->error_array(),
+                "message" => "Invalid data!"
+            )))->_display();
+            exit;
+        }
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setId($this->input->post("id", TRUE));
+        $this->admin_user->setFirst_name($this->input->post("first-name", TRUE));
+        $this->admin_user->setLast_name($this->input->post("last-name", TRUE));
+        $this->admin_user->setEmail($this->input->post("email", TRUE));
+        $this->admin_user->setPhone($this->input->post("phone", TRUE));
+        $this->admin_user->setMobile($this->input->post("mobile", TRUE));
+        $this->admin_user->setAusid(1);
+        $this->admin_user->setUpdated_auid($this->session->userdata("logged_in_auid"));
+        if (!$this->admin_user->update()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Failed to save data!"
+            )))->_display();
+            exit;
         }
 
         $this->output->set_output(json_encode(array(

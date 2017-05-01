@@ -20,8 +20,8 @@
                         <tr>
                             <th>Event Id</th>
                             <th>Name</th>
-                            <th>From</th>
-                            <th>To</th>
+                            <th>From date</th>
+                            <th>To date</th>
                             <th>Trek Distance</th>
                             <th>Fee</th>
                             <th>Grade</th>

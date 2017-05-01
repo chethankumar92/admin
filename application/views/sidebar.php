@@ -39,7 +39,7 @@
             </li>
             <li class="treeview <?= ($query->segments[1] === AdminUsers::class) ? "active" : "" ?>">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Admin User</span>
+                    <i class="fa fa-user-circle"></i> <span>Admin User</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -51,7 +51,7 @@
             </li>
             <li class="treeview <?= ($query->segments[1] === Events::class) ? "active" : "" ?>">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Event</span>
+                    <i class="fa fa-calendar"></i> <span>Event</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -63,7 +63,7 @@
             </li>
             <li class="treeview <?= ($query->segments[1] === Contacts::class) ? "active" : "" ?>">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Contact</span>
+                    <i class="fa fa-volume-control-phone"></i> <span>Contact</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>

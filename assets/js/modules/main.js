@@ -1,5 +1,19 @@
 $(document).ready(function (e) {
-    $("form[data-parsley-validate]").parsley();
+    if ($("form[data-parsley-validate]").length > 0) {
+        $("form[data-parsley-validate]").parsley();
+    }
+    if ($('.datepicker').length > 0) {
+        $('.datepicker').datepicker({
+            clearBtn: true,
+            format: "yyyy-mm-dd"
+        });
+    }
+    if ($('.selectpicker').length > 0) {
+        $('.selectpicker').selectpicker();
+    }
+    if ($('.summernote').length > 0) {
+        $('.summernote').summernote();
+    }
 });
 
 $(document).on("submit", "form[data-parsley-validate]", function (e) {

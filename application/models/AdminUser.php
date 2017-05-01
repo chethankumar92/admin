@@ -26,18 +26,12 @@ class AdminUser extends CI_Model {
     const TABLE_SESSION = "admin_user_session";
 
     /**
-     * Static variables
-     */
-    private static $db;
-
-    /**
      * Class constructor
      *
      * @return	void
      */
     public function __construct($id = NULL) {
         parent::__construct();
-        self::$db = &get_instance()->db;
         if ($id) {
             $this->auid = $id;
             $this->load();
@@ -92,6 +86,13 @@ class AdminUser extends CI_Model {
         return $this->updated_time;
     }
 
+    function setId($auid, $load = TRUE) {
+        $this->auid = $auid;
+        if ($load) {
+            $this->loadById();
+        }
+    }
+
     function setFirst_name($first_name) {
         $this->first_name = $first_name;
     }
@@ -139,7 +140,7 @@ class AdminUser extends CI_Model {
         $this->updated_time = $updated_time;
     }
 
-    public function load() {
+    public function loadById() {
         $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE auid = ?", array(
             $this->auid
         ));
@@ -148,7 +149,7 @@ class AdminUser extends CI_Model {
             return FALSE;
         }
 
-        $row = $result->result();
+        $row = $result->result()[0];
         foreach ($row as $key => $value) {
             $this->$key = $value;
         }
@@ -182,7 +183,8 @@ class AdminUser extends CI_Model {
     }
 
     public function insert() {
-        $result = $this->db->query("INSERT INTO " . self::TABLE . " (first_name, last_name, email, phone, mobile, password, ausid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", array(
+        $result = $this->db->query("INSERT INTO " . self::TABLE . " (first_name, last_name, email, "
+                . "phone, mobile, password, ausid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->first_name,
             $this->last_name,
             $this->email,
@@ -200,8 +202,28 @@ class AdminUser extends CI_Model {
         return TRUE;
     }
 
+    public function update() {
+        $result = $this->db->query("UPDATE " . self::TABLE . " SET first_name = ?, last_name = ?, "
+                . "email = ?, phone = ?, mobile = ?, password = ?, ausid = ?, updated_auid = ? WHERE auid = ?", array(
+            $this->first_name,
+            $this->last_name,
+            $this->email,
+            $this->phone,
+            $this->mobile,
+            $this->password,
+            $this->ausid,
+            $this->updated_auid,
+            $this->auid
+        ));
+
+        if (!$result) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+
     private function loadByEmail() {
-        $result = self::$db->query("SELECT * FROM " . self::TABLE . " WHERE email = ?", array(
+        $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE email = ?", array(
             $this->email
         ));
 

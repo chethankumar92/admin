@@ -13,8 +13,8 @@ class Event extends CI_Model {
     private $to_date;
     private $trek_distance;
     private $distance_from_bangalore;
-    private $fee;
-    private $accomodation;
+    private $cost;
+    private $accommodation;
     private $food;
     private $transportation;
     private $things_to_carry;
@@ -30,6 +30,9 @@ class Event extends CI_Model {
      * Constants
      */
     const TABLE = "event";
+    const TABLE_GRADE = "event_grade";
+    const TABLE_COST = "event_cost";
+    const TABLE_POLICY = "event_policy";
 
     /**
      * Class constructor
@@ -72,12 +75,12 @@ class Event extends CI_Model {
         return $this->distance_from_bangalore;
     }
 
-    function getFee() {
-        return $this->fee;
+    function getCost() {
+        return $this->cost;
     }
 
-    function getAccomodation() {
-        return $this->accomodation;
+    function getAccommodation() {
+        return $this->accommodation;
     }
 
     function getFood() {
@@ -120,6 +123,13 @@ class Event extends CI_Model {
         return $this->updated_time;
     }
 
+    function setId($eid, $load = TRUE) {
+        $this->eid = $eid;
+        if ($load) {
+            $this->loadById();
+        }
+    }
+
     function setName($name) {
         $this->name = $name;
     }
@@ -144,12 +154,12 @@ class Event extends CI_Model {
         $this->distance_from_bangalore = $distance_from_bangalore;
     }
 
-    function setFee($fee) {
-        $this->fee = $fee;
+    function setCost($cost) {
+        $this->cost = $cost;
     }
 
-    function setAccomodation($accomodation) {
-        $this->accomodation = $accomodation;
+    function setAccommodation($accommodation) {
+        $this->accommodation = $accommodation;
     }
 
     function setFood($food) {
@@ -192,16 +202,16 @@ class Event extends CI_Model {
         $this->updated_time = $updated_time;
     }
 
-    public function load() {
-        $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE auid = ?", array(
-            $this->auid
+    public function loadById() {
+        $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE eid = ?", array(
+            $this->eid
         ));
 
         if (!$result || $result->num_rows() < 1) {
             return FALSE;
         }
 
-        $row = $result->result();
+        $row = $result->result()[0];
         foreach ($row as $key => $value) {
             $this->$key = $value;
         }
@@ -209,12 +219,24 @@ class Event extends CI_Model {
     }
 
     public function insert() {
-        $result = $this->db->query("INSERT INTO " . self::TABLE . " SET name = ?, email = ?, mobile = ?, subject = ?, message = ?", array(
+        $result = $this->db->query("INSERT INTO " . self::TABLE . " (name, from_date, to_date, trek_distance, "
+                . "distance_from_bangalore, egid, cost, description, accommodation, transportation, food, things_to_carry, "
+                . "terms_and_conditions, esid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->name,
-            $this->email,
-            $this->mobile,
-            $this->subject,
-            $this->message
+            $this->from_date,
+            $this->to_date,
+            $this->trek_distance,
+            $this->distance_from_bangalore,
+            $this->egid,
+            $this->cost,
+            $this->description,
+            $this->accommodation,
+            $this->transportation,
+            $this->food,
+            $this->things_to_carry,
+            $this->terms_and_conditions,
+            $this->esid,
+            $this->created_auid
         ));
 
         if (!$result) {
@@ -222,6 +244,48 @@ class Event extends CI_Model {
         }
         $this->eid = $this->db->insert_id();
         return TRUE;
+    }
+
+    public function update() {
+        $result = $this->db->query("UPDATE " . self::TABLE . " SET name = ?, from_date = ?, "
+                . "to_date = ?, trek_distance = ?, distance_from_bangalore = ?, egid = ?, cost = ?, "
+                . "description = ?, accommodation = ?, transportation = ?, food = ?, things_to_carry = ?, "
+                . "terms_and_conditions = ?, esid = ?, updated_auid = ? WHERE eid = ?", array(
+            $this->name,
+            $this->from_date,
+            $this->to_date,
+            $this->trek_distance,
+            $this->distance_from_bangalore,
+            $this->egid,
+            $this->cost,
+            $this->description,
+            $this->accommodation,
+            $this->transportation,
+            $this->food,
+            $this->things_to_carry,
+            $this->terms_and_conditions,
+            $this->esid,
+            $this->updated_auid,
+            $this->eid
+        ));
+
+        if (!$result) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    public static function getGrades($egsid) {
+        $db = &get_instance()->db;
+
+        $result = $db->query("SELECT * FROM " . self::TABLE_GRADE . " WHERE egsid IN(?)", array(
+            is_array($egsid) ? implode(",", $egsid) : $egsid
+        ));
+
+        if (!$result || $result->num_rows() < 1) {
+            return FALSE;
+        }
+        return $result->result();
     }
 
 }

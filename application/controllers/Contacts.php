@@ -19,9 +19,29 @@ class Contacts extends MY_Controller {
     public function add() {
         $this->load->setTitle("Add Contact");
         $this->load->setDescription("Provide contact details and save");
-        $this->load->template('contact/add', array(
+
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->load->template('contact/add_edit_form', array(
             "action" => site_url(self::class . "/add_submit"),
-            "method" => "post"
+            "method" => "post",
+            "contact" => $this->contact
+        ));
+    }
+
+    public function edit() {
+        if (!is_numeric($this->uri->segments[3])) {
+            redirect(self::class);
+        }
+
+        $this->load->setTitle("Edit Contact");
+        $this->load->setDescription("Provide contact details and save");
+
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->contact->setId($this->uri->segments[3]);
+        $this->load->template('contact/add_edit_form', array(
+            "action" => site_url(self::class . "/edit_submit"),
+            "method" => "post",
+            "contact" => $this->contact
         ));
     }
 
@@ -29,6 +49,120 @@ class Contacts extends MY_Controller {
         if (!$this->input->is_ajax_request()) {
             redirect('404');
         }
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("name", 'Name', 'required|min_length[3]|max_length[31]');
+        $this->form_validation->set_rules("email", 'Email', 'valid_email');
+        $this->form_validation->set_rules("mobile", 'Mobile', 'integer');
+        $this->form_validation->set_rules('subject', 'Subject', 'required|min_length[4]|max_length[63]');
+        $this->form_validation->set_rules('message', 'Message', 'required|min_length[10]|max_length[255]');
+        if (!$this->form_validation->run()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "errors" => $this->form_validation->error_array(),
+                "message" => "Invalid contact details!"
+            )))->_display();
+            exit;
+        }
+
+        if (!trim($this->input->post("email")) && !trim($this->input->post("mobile"))) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Email or mobile number is needed to contact!"
+            )))->_display();
+            exit;
+        }
+
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->contact->setName($this->input->post("name", TRUE));
+        $this->contact->setEmail($this->input->post("email", TRUE));
+        $this->contact->setMobile($this->input->post("mobile", TRUE));
+        $this->contact->setSubject($this->input->post("subject", TRUE));
+        $this->contact->setMessage($this->input->post("message", TRUE));
+        $this->contact->setCsid(1);
+        $this->contact->setCreated_auid($this->session->userdata("logged_in_auid"));
+        if (!$this->contact->insert()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Failed to save the contact details!"
+            )))->_display();
+            exit;
+        }
+
+        if (trim($this->contact->getEmail())) {
+            $this->load->library('email');
+            $this->email->from('mountaintrekkersblr@gmail.com', 'Mountain Trekkers');
+            $this->email->to($this->contact->getEmail());
+            $this->email->subject("Acknowledgement: " . $this->contact->getSubject());
+            $this->email->message("Hi " . $this->contact->getName() . ",<br><br>"
+                    . "Thank you for your interest in our services. This is an acknowledgement for your request. Our representative will contact you shortly.<br><br>"
+                    . "Following are the details of your request for your reference,<br>"
+                    . "<b>Subject:</b> <i>" . $this->contact->getSubject() . "</i><br>"
+                    . "<b>Messsage:</b> <i>" . $this->contact->getMessage() . "</i><br><br>"
+                    . "Regards<br>"
+                    . "Mountain Trekkers");
+            $this->email->send();
+        }
+
+        $this->output->set_output(json_encode(array(
+            "success" => TRUE,
+            "url" => site_url(self::class),
+            "message" => "Data saved successfully!"
+        )))->_display();
+        exit;
+    }
+
+    public function edit_submit() {
+        if (!$this->input->is_ajax_request()) {
+            redirect('404');
+        }
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("id", 'Id', 'required');
+        $this->form_validation->set_rules("name", 'Name', 'required|min_length[3]|max_length[31]');
+        $this->form_validation->set_rules("email", 'Email', 'valid_email');
+        $this->form_validation->set_rules("mobile", 'Mobile', 'integer');
+        $this->form_validation->set_rules('subject', 'Subject', 'required|min_length[4]|max_length[63]');
+        $this->form_validation->set_rules('message', 'Message', 'required|min_length[10]|max_length[255]');
+        if (!$this->form_validation->run()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "errors" => $this->form_validation->error_array(),
+                "message" => "Invalid data!"
+            )))->_display();
+            exit;
+        }
+
+        if (!trim($this->input->post("email")) && !trim($this->input->post("mobile"))) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Email or mobile number is needed to contact!"
+            )))->_display();
+            exit;
+        }
+
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->contact->setId($this->input->post("id", TRUE));
+        $this->contact->setName($this->input->post("name", TRUE));
+        $this->contact->setEmail($this->input->post("email", TRUE));
+        $this->contact->setMobile($this->input->post("mobile", TRUE));
+        $this->contact->setSubject($this->input->post("subject", TRUE));
+        $this->contact->setMessage($this->input->post("message", TRUE));
+        $this->contact->setUpdated_auid($this->session->userdata("logged_in_auid"));
+        if (!$this->contact->update()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Failed to save the data!"
+            )))->_display();
+            exit;
+        }
+
+        $this->output->set_output(json_encode(array(
+            "success" => TRUE,
+            "url" => site_url(self::class),
+            "message" => "Data saved successfully!"
+        )))->_display();
+        exit;
     }
 
     public function render() {

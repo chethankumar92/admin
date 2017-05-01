@@ -1,20 +1,19 @@
 <?php
 
-    class MY_Controller extends CI_Controller
-    {
+defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 
-        public function __construct()
-        {
-            parent::__construct();
+class MY_Controller extends CI_Controller {
 
-            if (!$this->session->userdata('logged_in'))
-            {
-                redirect('login');
-            }
-            
-            $this->load->model('AdminUser', 'admin_user', TRUE, $this->session->userdata('logged_in_auid'));
-            $this->session->set_userdata('logged_in_user', $this->admin_user);
+    public function __construct() {
+        parent::__construct();
+
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login');
         }
 
+        $this->load->model('AdminUser', 'admin_user', TRUE, $this->session->userdata('logged_in_auid'));
+        $this->session->set_userdata('logged_in_user', $this->admin_user);
     }
-    
+
+}
