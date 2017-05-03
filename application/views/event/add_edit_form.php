@@ -47,6 +47,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="cost" class="col-lg-2 control-label">Cost</label>
+                            <div class="col-lg-10">
+                                <input type="text" value="<?= $event->getCost() ?>" class="form-control" name="cost" placeholder="Cost" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="grade" class="col-lg-2 control-label">Grade</label>
                             <div class="col-lg-10">
                                 <select class="form-control selectpicker" name="grade" required="">
@@ -57,12 +63,6 @@
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="cost" class="col-lg-2 control-label">Cost</label>
-                            <div class="col-lg-10">
-                                <input type="text" value="<?= $event->getCost() ?>" class="form-control" name="cost" placeholder="Cost" required="">
                             </div>
                         </div>
                         <div class="form-group">

@@ -12,7 +12,9 @@ $(document).ready(function (e) {
         $('.selectpicker').selectpicker();
     }
     if ($('.summernote').length > 0) {
-        $('.summernote').summernote();
+        $('.summernote').summernote({
+            minHeight: 100
+        });
     }
 });
 

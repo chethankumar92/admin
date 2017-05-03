@@ -28,16 +28,20 @@ class Contacts extends MY_Controller {
         ));
     }
 
-    public function edit() {
-        if (!is_numeric($this->uri->segments[3])) {
+    public function edit($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+        
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->contact->setId($id);
+        if(!$this->contact->getCsid()){
             redirect(self::class);
         }
 
         $this->load->setTitle("Edit Contact");
         $this->load->setDescription("Provide contact details and save");
 
-        $this->load->model('Contact', 'contact', TRUE);
-        $this->contact->setId($this->uri->segments[3]);
         $this->load->template('contact/add_edit_form', array(
             "action" => site_url(self::class . "/edit_submit"),
             "method" => "post",
@@ -195,6 +199,25 @@ class Contacts extends MY_Controller {
         $this->ssp->setInput($this->input->post());
 
         echo $this->ssp->render();
+    }
+
+    public function view($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+        
+        $this->load->model('Contact', 'contact', TRUE);
+        $this->contact->setId($id);
+        if(!$this->contact->getCsid()){
+            redirect(self::class);
+        }
+
+        $this->load->setTitle("View Contact");
+        $this->load->setDescription("Details of the contact");
+
+        $this->load->template('contact/view', array(
+            "contact" => $this->contact
+        ));
     }
 
 }

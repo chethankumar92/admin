@@ -28,16 +28,20 @@ class AdminUsers extends MY_Controller {
         ));
     }
 
-    public function edit() {
-        if (!is_numeric($this->uri->segments[3])) {
+    public function edit($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setId($id);
+        if (!$this->admin_user->getAusid()) {
             redirect(self::class);
         }
 
         $this->load->setTitle("Edit Admin User");
         $this->load->setDescription("Provide admin user details and save");
 
-        $this->load->model('AdminUser', 'admin_user', TRUE);
-        $this->admin_user->setId($this->uri->segments[3]);
         $this->load->template('admin_user/add_edit_form', array(
             "action" => site_url(self::class . "/edit_submit"),
             "method" => "post",
@@ -181,6 +185,25 @@ class AdminUsers extends MY_Controller {
         $this->ssp->setInput($this->input->post());
 
         echo $this->ssp->render();
+    }
+
+    public function view($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setId($id);
+        if (!$this->admin_user->getAusid()) {
+            redirect(self::class);
+        }
+
+        $this->load->setTitle("View Admin User");
+        $this->load->setDescription("Details of the admin user");
+
+        $this->load->template('admin_user/view', array(
+            "admin_user" => $this->admin_user
+        ));
     }
 
 }

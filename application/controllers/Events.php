@@ -36,8 +36,14 @@ class Events extends MY_Controller {
         ));
     }
 
-    public function edit() {
-        if (!is_numeric($this->uri->segments[3])) {
+    public function edit($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+
+        $this->load->model('Event', 'event', TRUE);
+        $this->event->setId($id);
+        if (!$this->event->getEsid()) {
             redirect(self::class);
         }
 
@@ -51,8 +57,6 @@ class Events extends MY_Controller {
         $this->load->addPlugins("selectpicker/js/bootstrap-select", "js", 10);
         $this->load->addPlugins("selectpicker/css/bootstrap-select", "css", 10);
 
-        $this->load->model('Event', 'event', TRUE);
-        $this->event->setId($this->uri->segments[3]);
         $this->load->template('event/add_edit_form', array(
             "action" => site_url(self::class . "/edit_submit"),
             "method" => "post",
@@ -204,6 +208,25 @@ class Events extends MY_Controller {
         $this->ssp->setInput($this->input->post());
 
         echo $this->ssp->render();
+    }
+
+    public function view($id) {
+        if (!is_numeric($id)) {
+            redirect(self::class);
+        }
+
+        $this->load->model('Event', 'event', TRUE);
+        $this->event->setId($id);
+        if (!$this->event->getEsid()) {
+            redirect(self::class);
+        }
+
+        $this->load->setTitle("View Event");
+        $this->load->setDescription("Details of the event");
+
+        $this->load->template('event/view', array(
+            "event" => $this->event
+        ));
     }
 
 }

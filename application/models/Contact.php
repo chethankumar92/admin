@@ -13,6 +13,7 @@ class Contact extends CI_Model {
     private $mobile;
     private $subject;
     private $message;
+    private $csid;
     private $created_auid;
     private $updated_auid;
     private $created_time;
@@ -60,6 +61,10 @@ class Contact extends CI_Model {
         return $this->message;
     }
 
+    function getCsid() {
+        return $this->csid;
+    }
+
     function getCreated_auid() {
         return $this->created_auid;
     }
@@ -101,6 +106,10 @@ class Contact extends CI_Model {
 
     function setMessage($message) {
         $this->message = $message;
+    }
+
+    function setCsid($csid) {
+        $this->csid = $csid;
     }
 
     function setCreated_auid($created_auid) {
