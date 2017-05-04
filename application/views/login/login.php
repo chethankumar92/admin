@@ -1,6 +1,6 @@
 <div class="login-box">
     <div class="login-logo">
-        <a href=""><b>Admin</b>LTE</a>
+        <b>Mountain Trekkers</b>
     </div>
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -14,18 +14,15 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input name="remember" type="checkbox"> Remember Me
-                        </label>
-                    </div>
-                </div>
-                <div class="col-xs-4">
+                <div class="col-xs-12">
                     <button name="submit" type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
             </div>
         </form>
-        <a href="">I forgot my password</a><br>
+        <div class="row hide">
+            <div class="col-xs-12 text-center">
+                <a href="#">I forgot my password</a><br>
+            </div>
+        </div>
     </div>
 </div>

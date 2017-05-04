@@ -8,7 +8,7 @@
                 <img src="<?= base_url() ?>/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                <p><?= $logged_in_user->getFirst_name() . " " . $logged_in_user->getLast_name() ?></p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>

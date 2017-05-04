@@ -1,5 +1,7 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * Loader to includes defaults
  * 
@@ -50,11 +52,18 @@ class MY_Loader extends CI_Loader {
     );
 
     public function template($template, $vars = array(), $return = FALSE, $is_login = FALSE, $extra = array()) {
+        $instance = &get_instance();
+        $instance->load->model('AdminUser', 'admin_user', TRUE);
+        $instance->admin_user->setId($instance->session->userdata('logged_in_auid'));
+
         $header = $this->view('header', array(
-            "logout_action" => site_url("logout/log_out")
+            "logout_action" => site_url("logout/log_out"),
+            "logged_in_user" => $instance->admin_user
                 ), TRUE);
+
         $sidebar = $this->view('sidebar', array(
-            "query" => $this->uri
+            "query" => $this->uri,
+            "logged_in_user" => $instance->admin_user
                 ), TRUE);
 
         $body = $this->view($template, array_merge($vars, array(
