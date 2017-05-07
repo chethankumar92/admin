@@ -14,10 +14,15 @@ class Event extends CI_Model {
     private $trek_distance;
     private $distance_from_bangalore;
     private $cost;
+    private $cost_includes;
+    private $cost_excludes;
+    private $tentative_schedule;
     private $accommodation;
     private $food;
     private $transportation;
     private $things_to_carry;
+    private $cancellation_policy;
+    private $refund_policy;
     private $terms_and_conditions;
     private $egid;
     private $esid;
@@ -33,6 +38,7 @@ class Event extends CI_Model {
     const TABLE_GRADE = "event_grade";
     const TABLE_COST = "event_cost";
     const TABLE_POLICY = "event_policy";
+    const TABLE_IMAGE = "event_image";
 
     /**
      * Class constructor
@@ -79,6 +85,18 @@ class Event extends CI_Model {
         return $this->cost;
     }
 
+    function getCost_includes() {
+        return $this->cost_includes;
+    }
+
+    function getCost_excludes() {
+        return $this->cost_excludes;
+    }
+
+    function getTentative_schedule() {
+        return $this->tentative_schedule;
+    }
+
     function getAccommodation() {
         return $this->accommodation;
     }
@@ -93,6 +111,14 @@ class Event extends CI_Model {
 
     function getThings_to_carry() {
         return $this->things_to_carry;
+    }
+
+    function getCancellation_policy() {
+        return $this->cancellation_policy;
+    }
+
+    function getRefund_policy() {
+        return $this->refund_policy;
     }
 
     function getTerms_and_conditions() {
@@ -158,6 +184,18 @@ class Event extends CI_Model {
         $this->cost = $cost;
     }
 
+    function setCost_includes($cost_includes) {
+        $this->cost_includes = $cost_includes;
+    }
+
+    function setCost_excludes($cost_excludes) {
+        $this->cost_excludes = $cost_excludes;
+    }
+
+    function setTentative_schedule($tentative_schedule) {
+        $this->tentative_schedule = $tentative_schedule;
+    }
+
     function setAccommodation($accommodation) {
         $this->accommodation = $accommodation;
     }
@@ -172,6 +210,14 @@ class Event extends CI_Model {
 
     function setThings_to_carry($things_to_carry) {
         $this->things_to_carry = $things_to_carry;
+    }
+
+    function setCancellation_policy($cancellation_policy) {
+        $this->cancellation_policy = $cancellation_policy;
+    }
+
+    function setRefund_policy($refund_policy) {
+        $this->refund_policy = $refund_policy;
     }
 
     function setTerms_and_conditions($terms_and_conditions) {
@@ -220,21 +266,25 @@ class Event extends CI_Model {
 
     public function insert() {
         $result = $this->db->query("INSERT INTO " . self::TABLE . " (name, from_date, to_date, trek_distance, "
-                . "distance_from_bangalore, egid, cost, description, accommodation, transportation, food, things_to_carry, "
-                . "terms_and_conditions, esid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
+                . "distance_from_bangalore, cost, cost_includes, cost_excludes, tentative_schedule, description, "
+                . "accommodation, transportation, food, things_to_carry, cancellation_policy, refund_policy, "
+                . "terms_and_conditions, egid, esid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->name,
             $this->from_date,
             $this->to_date,
             $this->trek_distance,
             $this->distance_from_bangalore,
-            $this->egid,
             $this->cost,
+            $this->cost_includes,
+            $this->cost_excludes,
+            $this->tentative_schedule,
             $this->description,
             $this->accommodation,
             $this->transportation,
             $this->food,
             $this->things_to_carry,
             $this->terms_and_conditions,
+            $this->egid,
             $this->esid,
             $this->created_auid
         ));
@@ -248,22 +298,29 @@ class Event extends CI_Model {
 
     public function update() {
         $result = $this->db->query("UPDATE " . self::TABLE . " SET name = ?, from_date = ?, "
-                . "to_date = ?, trek_distance = ?, distance_from_bangalore = ?, egid = ?, cost = ?, "
-                . "description = ?, accommodation = ?, transportation = ?, food = ?, things_to_carry = ?, "
-                . "terms_and_conditions = ?, esid = ?, updated_auid = ? WHERE eid = ?", array(
+                . "to_date = ?, trek_distance = ?, distance_from_bangalore = ?, cost = ?, "
+                . "cost_includes = ?, cost_excludes = ?, tentative_schedule = ?, description = ?, "
+                . "accommodation = ?, transportation = ?, food = ?, things_to_carry = ?, "
+                . "cancellation_policy = ?, refund_policy = ?, terms_and_conditions = ?, egid = ?, esid = ?, updated_auid = ? "
+                . "WHERE eid = ?", array(
             $this->name,
             $this->from_date,
             $this->to_date,
             $this->trek_distance,
             $this->distance_from_bangalore,
-            $this->egid,
             $this->cost,
+            $this->cost_includes,
+            $this->cost_excludes,
+            $this->tentative_schedule,
             $this->description,
             $this->accommodation,
             $this->transportation,
             $this->food,
             $this->things_to_carry,
+            $this->cancellation_policy,
+            $this->refund_policy,
             $this->terms_and_conditions,
+            $this->egid,
             $this->esid,
             $this->updated_auid,
             $this->eid
@@ -273,6 +330,23 @@ class Event extends CI_Model {
             return FALSE;
         }
         return TRUE;
+    }
+
+    public function getImages($eisid = 1, $size = IMAGE_SMALL_FOLDER) {
+        $result = $this->db->query("SELECT * FROM " . self::TABLE_IMAGE . " WHERE eid = ? AND eisid IN(?)", array(
+            $this->eid,
+            is_array($eisid) ? implode(",", $eisid) : $eisid,
+        ));
+
+        if (!$result || $result->num_rows() < 1) {
+            return array();
+        }
+
+        $images = $result->result();
+        foreach ($images as $image) {
+            $image->url = asset_url() . "files/event/$size/" . $image->name;
+        }
+        return $images;
     }
 
     public static function getGrades($egsid) {

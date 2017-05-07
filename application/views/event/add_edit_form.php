@@ -35,6 +35,19 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="grade" class="col-lg-2 control-label">Grade</label>
+                            <div class="col-lg-10">
+                                <select class="form-control selectpicker" name="grade" required="">
+                                    <option value="">Select grade</option>
+                                    <?php if (isset($grades) && is_array($grades)): ?>
+                                        <?php foreach ($grades as $grade): ?>
+                                            <option value="<?= $grade->egid ?>" <?= $event->getEgid() == $grade->egid ? "selected" : "" ?>><?= $grade->name ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="trek-distance" class="col-lg-2 control-label">Trek distance</label>
                             <div class="col-lg-10">
                                 <input type="text" value="<?= $event->getTrek_distance() ?>" class="form-control" name="trek-distance" placeholder="Trek distance" required="">
@@ -53,22 +66,33 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="grade" class="col-lg-2 control-label">Grade</label>
+                            <label for="cost-includes" class="col-lg-2 control-label">Cost includes</label>
                             <div class="col-lg-10">
-                                <select class="form-control selectpicker" name="grade" required="">
-                                    <option value="">Select grade</option>
-                                    <?php if (isset($grades) && is_array($grades)): ?>
-                                        <?php foreach ($grades as $grade): ?>
-                                            <option value="<?= $grade->egid ?>" <?= $event->getEgid() == $grade->egid ? "selected" : "" ?>><?= $grade->name ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
+                                <textarea class="form-control summernote" rows="3" name="cost-includes" placeholder="Cost includes">
+                                    <?= $event->getCost_includes() ?>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cost-excludes" class="col-lg-2 control-label">Cost excludes</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control summernote" rows="3" name="cost-excludes" placeholder="Cost excludes">
+                                    <?= $event->getCost_excludes() ?>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tentative-schedule" class="col-lg-2 control-label">Tentative schedule</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control summernote" rows="3" name="tentative-schedule" placeholder="Tentative schedule">
+                                    <?= $event->getTentative_schedule() ?>
+                                </textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-lg-2 control-label">Description</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="description" placeholder="Description" required="">
+                                <textarea class="form-control summernote" rows="3" name="description" placeholder="Description">
                                     <?= $event->getDescription() ?>
                                 </textarea>
                             </div>
@@ -92,7 +116,7 @@
                         <div class="form-group">
                             <label for="food" class="col-lg-2 control-label">Food</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="food" placeholder="Food" required="">
+                                <textarea class="form-control summernote" rows="3" name="food" placeholder="Food">
                                     <?= $event->getFood() ?>
                                 </textarea>
                             </div>
@@ -106,11 +130,35 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="cancellation-policy" class="col-lg-2 control-label">Cancellation policy</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control summernote" rows="3" name="cancellation-policy" placeholder="Cancellation policy">
+                                    <?= $event->getCancellation_policy() ?>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="refund-policy" class="col-lg-2 control-label">Refund policy</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control summernote" rows="3" name="refund-policy" placeholder="Refund policy">
+                                    <?= $event->getRefund_policy() ?>
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="terms-and-conditions" class="col-lg-2 control-label">Terms and conditions</label>
                             <div class="col-lg-10">
                                 <textarea class="form-control summernote" rows="3" name="terms-and-conditions" placeholder="Terms and conditions">
                                     <?= $event->getTerms_and_conditions() ?>
                                 </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="images" class="col-lg-2 control-label">Images</label>
+                            <div class="col-lg-10">
+                                <div id="dZUpload" class="dropzone">
+                                </div>
+                                <input type="hidden" name="images" required="" data-images='<?= json_encode($event->getImages()) ?>'>
                             </div>
                         </div>
                         <div class="form-group">

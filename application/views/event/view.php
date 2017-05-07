@@ -57,6 +57,36 @@
                     <div class="col-lg-4 col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item list-header text-center">
+                                Cost includes
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCost_includes() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Cost excludes
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCost_excludes() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Tentative schedule
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getTentative_schedule() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
                                 Accommodation
                             </li>
                             <li class="list-group-item">
@@ -97,10 +127,62 @@
                     <div class="col-lg-4 col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item list-header text-center">
+                                Cancellation policy
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCancellation_policy() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Refund policy
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getRefund_policy() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
                                 Terms and conditions
                             </li>
                             <li class="list-group-item">
                                 <?= $event->getTerms_and_conditions() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Images
+                            </li>
+                            <li class="list-group-item">
+                                <?php $images = $event->getImages() ?>
+                                <div id="event-image-arousel" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <?php foreach ($images as $key => $image): ?>
+                                            <li data-target="#event-image-arousel" data-slide-to="<?= $key ?>" class="<?= !$key ? 'active' : '' ?>"></li>
+                                        <?php endforeach; ?>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        <?php foreach ($images as $key => $image): ?>
+                                            <div class="item <?= !$key ? 'active' : '' ?>">
+                                                <img src="<?= $image->url ?>" alt="<?= $image->name ?>" class="img-responsive" style="margin: auto;">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <a class="left carousel-control" href="#event-image-arousel" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#event-image-arousel" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
                             </li>
                         </ul>
                     </div>

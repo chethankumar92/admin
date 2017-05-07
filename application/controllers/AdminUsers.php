@@ -68,7 +68,7 @@ class AdminUsers extends MY_Controller {
         }
 
         $this->load->helper('phpass');
-        $password = get_random_password();
+        $password = get_random_string();
         $hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);
 
         $this->load->model('AdminUser', 'admin_user', TRUE);

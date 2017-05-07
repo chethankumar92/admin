@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 
-if (!function_exists('get_random_password')) {
+if (!function_exists('get_random_string')) {
 
     /**
      * Generate a random password. 
@@ -20,7 +20,7 @@ if (!function_exists('get_random_password')) {
      *
      * @return    string containing a random password 
      */
-    function get_random_password($chars_min = 6, $chars_max = 8, $upper_case = true, $include_numbers = true, $include_specials = true) {
+    function get_random_string($chars_min = 6, $chars_max = 8, $upper_case = TRUE, $include_numbers = TRUE, $include_specials = FALSE) {
         $selection = 'abcdefghijklmnopqrstuvwxyz';
         if ($include_numbers) {
             $selection .= "0123456789";

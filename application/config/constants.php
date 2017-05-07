@@ -95,3 +95,27 @@ defined('EXIT__AUTO_MAX') OR define('EXIT__AUTO_MAX', 125); // highest automatic
  */
 define('PHPASS_HASH_STRENGTH', 8);
 define('PHPASS_HASH_PORTABLE', FALSE);
+
+/*
+  |--------------------------------------------------------------------------
+  | Standard image sizes
+  |--------------------------------------------------------------------------
+  |
+  | Large:     1600 X 1200
+  | Medium:     800 X 600
+  | Small:      400 X 300
+  | Thumbnail:  100 X 75
+  |
+ */
+define('IMAGE_LARGE_FOLDER', 'large');
+define('IMAGE_MEDIUM_FOLDER', 'medium');
+define('IMAGE_SMALL_FOLDER', 'small');
+define('IMAGE_THUMBNAIL_FOLDER', 'thumbnail');
+define('IMAGE_LARGE_WIDTH', 1600);
+define('IMAGE_LARGE_HEIGHT', 1200);
+define('IMAGE_MEDIUM_WIDTH', 800);
+define('IMAGE_MEDIUM_HEIGHT', 600);
+define('IMAGE_SMALL_WIDTH', 400);
+define('IMAGE_SMALL_HEIGHT', 300);
+define('IMAGE_THUMBNAIL_WIDTH', 100);
+define('IMAGE_THUMBNAIL_HEIGHT', 75);
