@@ -73,6 +73,18 @@
                     <li class="<?= ($query->uri_string === Contacts::class) ? "active" : "" ?>"><a href="<?= site_url(Contacts::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
                 </ul>
             </li>
+            <li class="treeview <?= ($query->segments[1] === Pages::class) ? "active" : "" ?>">
+                <a href="#">
+                    <i class="fa fa-file-text"></i> <span>Page</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= ($query->uri_string === Pages::class . "/add") ? "active" : "" ?>"><a href="<?= site_url(Pages::class . "/add") ?>"><i class="fa fa-angle-right"></i> Add</a></li>
+                    <li class="<?= ($query->uri_string === Pages::class) ? "active" : "" ?>"><a href="<?= site_url(Pages::class) ?>"><i class="fa fa-angle-right"></i> Manage</a></li>
+                </ul>
+            </li>
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-angle-right text-red"></i> <span>Important</span></a></li>
             <li><a href="#"><i class="fa fa-angle-right text-yellow"></i> <span>Warning</span></a></li>

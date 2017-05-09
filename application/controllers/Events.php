@@ -38,6 +38,8 @@ class Events extends MY_Controller {
 
         $this->load->template('event/add_edit_form', array(
             "action" => site_url(self::class . "/add_submit"),
+            "upload" => site_url(self::class . "/upload"),
+            "remove" => site_url(self::class . "/remove"),
             "method" => "post",
             "event" => $this->event,
             "grades" => Event::getGrades(1)
@@ -71,6 +73,8 @@ class Events extends MY_Controller {
 
         $this->load->template('event/add_edit_form', array(
             "action" => site_url(self::class . "/edit_submit"),
+            "upload" => site_url(self::class . "/upload"),
+            "remove" => site_url(self::class . "/remove"),
             "method" => "post",
             "event" => $this->event,
             "grades" => Event::getGrades(1)
@@ -90,7 +94,7 @@ class Events extends MY_Controller {
         $this->form_validation->set_rules("distance-from-bangalore", 'Distance from bangalore', 'required');
         $this->form_validation->set_rules("grade", 'Grade', 'required');
         $this->form_validation->set_rules("cost", 'Cost', 'required');
-        $this->form_validation->set_rules("images", 'Image(/s)', 'required|min_length[40]');
+        $this->form_validation->set_rules("images", 'Image(/s)', 'required|min_length[10]');
         if (!$this->form_validation->run()) {
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
@@ -215,7 +219,7 @@ class Events extends MY_Controller {
         $this->form_validation->set_rules("distance-from-bangalore", 'Distance from bangalore', 'required');
         $this->form_validation->set_rules("grade", 'Grade', 'required');
         $this->form_validation->set_rules("cost", 'Cost', 'required');
-        $this->form_validation->set_rules("images", 'Image(/s)', 'required|min_length[40]');
+        $this->form_validation->set_rules("images", 'Image(/s)', 'required|min_length[10]');
         if (!$this->form_validation->run()) {
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
@@ -396,8 +400,8 @@ class Events extends MY_Controller {
         $config['upload_path'] = realpath(APPPATH . '../../files/event') . "/";
         $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $config['max_size'] = 10 * 1024;
-        $config['max_width'] = 6400;
-        $config['max_height'] = 4800;
+        $config['max_width'] = IMAGE_LARGE_WIDTH * 10;
+        $config['max_height'] = IMAGE_LARGE_HEIGHT * 10;
         $config['file_name'] = get_random_string(15, 15);
         $this->load->library('upload', $config);
 
@@ -422,6 +426,7 @@ class Events extends MY_Controller {
 
         $this->output->set_output(json_encode(array(
             "success" => TRUE,
+            "type" => "success",
             "url" => site_url(self::class),
             "message" => "Data saved successfully!",
             "data" => $this->upload->data()

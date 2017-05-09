@@ -1,10 +1,11 @@
 $(document).ready(function (e) {
-    if ($(".dropzone").length > 0) {
+    if ($("#dZUpload").length > 0) {
+        var dzData = $("#dZUpload").data();
         Dropzone.autoDiscover = false;
         window.eventImages = {};
 
         window.eventDz = $("#dZUpload").dropzone({
-            url: "http://127.0.0.1/admin/index.php/Events/upload",
+            url: dzData.upload,
             uploadMultiple: true,
             parallelUploads: 25,
             maxFiles: 25,
@@ -15,7 +16,11 @@ $(document).ready(function (e) {
                 var _ref = this;
                 var mockFiles = $('[name=images]').data("images");
                 $.each(mockFiles, function (index, mockFile) {
-                    window.eventImages[mockFile.name, mockFile]
+                    window.eventImages[mockFile.name] = {
+                        file_name: mockFile.name,
+                        file_id: mockFile.eiid
+                    };
+                    $('[name=images]').val(JSON.stringify(window.eventImages));
                     _ref.emit("addedfile", mockFile);
                     _ref.files.push(mockFile);
                     _ref.createThumbnailFromUrl(mockFile, mockFile.url, function () {
@@ -30,10 +35,21 @@ $(document).ready(function (e) {
                         file_name: result.data.file_name
                     };
                     $('[name=images]').val(JSON.stringify(window.eventImages));
+                } else {
+                    file.previewElement.remove();
                 }
+                $.notify(result.message, {
+                    type: result.type || "error",
+                    allow_dismiss: true,
+                    showProgressbar: false,
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    }
+                });
             },
             removedfile: function (file) {
-                $.post("http://127.0.0.1/admin/index.php/Events/remove", {
+                $.post(dzData.remove, {
                     image: {
                         file_name: file.name,
                         file_id: file.eiid

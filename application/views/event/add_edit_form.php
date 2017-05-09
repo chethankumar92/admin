@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <label for="images" class="col-lg-2 control-label">Images</label>
                             <div class="col-lg-10">
-                                <div id="dZUpload" class="dropzone">
+                                <div id="dZUpload" class="dropzone" data-upload="<?= $upload ?>" data-remove="<?= $remove ?>">
                                 </div>
                                 <input type="hidden" name="images" required="" data-images='<?= json_encode($event->getImages()) ?>'>
                             </div>

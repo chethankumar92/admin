@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * Event related logic
  * 
@@ -268,7 +270,7 @@ class Event extends CI_Model {
         $result = $this->db->query("INSERT INTO " . self::TABLE . " (name, from_date, to_date, trek_distance, "
                 . "distance_from_bangalore, cost, cost_includes, cost_excludes, tentative_schedule, description, "
                 . "accommodation, transportation, food, things_to_carry, cancellation_policy, refund_policy, "
-                . "terms_and_conditions, egid, esid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
+                . "terms_and_conditions, egid, esid, created_auid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->name,
             $this->from_date,
             $this->to_date,
@@ -283,6 +285,8 @@ class Event extends CI_Model {
             $this->transportation,
             $this->food,
             $this->things_to_carry,
+            $this->cancellation_policy,
+            $this->refund_policy,
             $this->terms_and_conditions,
             $this->egid,
             $this->esid,
@@ -301,8 +305,8 @@ class Event extends CI_Model {
                 . "to_date = ?, trek_distance = ?, distance_from_bangalore = ?, cost = ?, "
                 . "cost_includes = ?, cost_excludes = ?, tentative_schedule = ?, description = ?, "
                 . "accommodation = ?, transportation = ?, food = ?, things_to_carry = ?, "
-                . "cancellation_policy = ?, refund_policy = ?, terms_and_conditions = ?, egid = ?, esid = ?, updated_auid = ? "
-                . "WHERE eid = ?", array(
+                . "cancellation_policy = ?, refund_policy = ?, terms_and_conditions = ?, egid = ?, "
+                . "esid = ?, updated_auid = ? WHERE eid = ?", array(
             $this->name,
             $this->from_date,
             $this->to_date,
