@@ -132,13 +132,6 @@ class Contacts extends MY_Controller {
             redirect('404');
         }
 
-        sleep(3);
-        $this->output->set_output(json_encode(array(
-            "success" => FALSE,
-            "message" => "Invalid data!"
-        )))->_display();
-        exit;
-
         $this->load->library('form_validation');
         $this->form_validation->set_rules("id", 'Id', 'required');
         $this->form_validation->set_rules("name", 'Name', 'required|min_length[3]|max_length[31]');
