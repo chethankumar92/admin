@@ -2,13 +2,11 @@ $(document).ready(function (e) {
     if ($("#dZUpload").length > 0) {
         var dzData = $("#dZUpload").data();
         Dropzone.autoDiscover = false;
-        window.eventImages = {};
+        window.testimonialImages = {};
 
-        window.eventDz = $("#dZUpload").dropzone({
+        window.testimonialDz = $("#dZUpload").dropzone({
             url: dzData.upload,
-            uploadMultiple: true,
-            parallelUploads: 25,
-            maxFiles: 25,
+            uploadMultiple: false,
             maxFilesize: 10,
             acceptedFiles: 'image/*',
             addRemoveLinks: true,
@@ -16,11 +14,10 @@ $(document).ready(function (e) {
                 var _ref = this;
                 var mockFiles = $('[name=images]').data("images");
                 $.each(mockFiles, function (index, mockFile) {
-                    window.eventImages[mockFile.name] = {
-                        file_name: mockFile.name,
-                        file_id: mockFile.eiid
+                    window.testimonialImages[mockFile.name] = {
+                        file_name: mockFile.name
                     };
-                    $('[name=images]').val(JSON.stringify(window.eventImages));
+                    $('[name=images]').val(JSON.stringify(window.testimonialImages));
                     _ref.emit("addedfile", mockFile);
                     _ref.files.push(mockFile);
                     _ref.createThumbnailFromUrl(mockFile, mockFile.url, function () {
@@ -31,10 +28,10 @@ $(document).ready(function (e) {
             success: function (file, response) {
                 var result = JSON.parse(response);
                 if (result.success) {
-                    window.eventImages[result.data.file_name] = {
+                    window.testimonialImages[result.data.file_name] = {
                         file_name: result.data.file_name
                     };
-                    $('[name=images]').val(JSON.stringify(window.eventImages));
+                    $('[name=images]').val(JSON.stringify(window.testimonialImages));
                 } else {
                     file.previewElement.remove();
                 }
@@ -58,8 +55,8 @@ $(document).ready(function (e) {
                     var result = JSON.parse(response);
                     if (result.success) {
                         file.previewElement.remove();
-                        delete window.eventImages[file.name];
-                        $('[name=images]').val(JSON.stringify(window.eventImages));
+                        delete window.testimonialImages[file.name];
+                        $('[name=images]').val(JSON.stringify(window.testimonialImages));
                     }
                     $.notify(result.message, {
                         type: result.type || "error",
@@ -75,19 +72,19 @@ $(document).ready(function (e) {
         });
     }
 
-    if ($("#event-manage-table").length > 0) {
-        window.eventManageTable = $("#event-manage-table").DataTable({
+    if ($("#testimonial-manage-table").length > 0) {
+        window.testimonialManageTable = $("#testimonial-manage-table").DataTable({
             dom: '<"col-sm-6"l><"col-sm-6"f><"col-sm-6"i><"col-sm-6"p>rTt',
             serverSide: true,
             ajax: {
-                url: $("#event-manage-table").data("render-url"),
+                url: $("#testimonial-manage-table").data("render-url"),
                 type: 'POST'
             },
             buttons: [
                 'copy', 'excel', 'pdf'
             ],
             fnDrawCallback: function (oSettings) {
-                $('#event-manage-table .dropdown-toggle').dropdown();
+                $('#testimonial-manage-table .dropdown-toggle').dropdown();
             }
         });
     }
@@ -100,11 +97,11 @@ $(document).on("click", ".change-status", function (e) {
     var status = $(this).data("status");
 
     var inputOptions = [];
-    var statuses = $("#event-manage-table").data("statuses");
+    var statuses = $("#testimonial-manage-table").data("statuses");
     statuses.forEach(function (stat, index) {
         inputOptions.push({
             text: stat.name,
-            value: stat.esid
+            value: stat.tsid
         });
     });
 
@@ -119,15 +116,15 @@ $(document).on("click", ".change-status", function (e) {
                 data.append('id', id);
                 data.append('status', output);
                 $.ajax({
-                    url: $("#event-manage-table").data("status-action"),
+                    url: $("#testimonial-manage-table").data("status-action"),
                     data: data,
                     contentType: false,
                     processData: false,
-                    type: $("#event-manage-table").data("status-method"),
+                    type: $("#testimonial-manage-table").data("status-method"),
                     success: function (response) {
                         var result = JSON.parse(response);
                         if (result.success) {
-                            window.eventManageTable.draw();
+                            window.testimonialManageTable.draw();
                         }
                         $.notify(result.message, {
                             type: result.type || "error",

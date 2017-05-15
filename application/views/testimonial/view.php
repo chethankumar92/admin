@@ -7,7 +7,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Contact Details</h3>
+                <h3 class="box-title">Testimonial Details</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                         <i class="fa fa-minus"></i>
@@ -16,32 +16,23 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group text-right">
+                    <div class="col-lg-6">
+                        <ul class="list-group">
                             <li class="list-group-item list-header text-center">
-                                Name and contact details
+                                <?= $testimonial->getName() ?>, <?= $testimonial->getDesignation() ?>
                             </li>
                             <li class="list-group-item">
-                                <b class="pull-left">Name:</b>&nbsp;<?= $contact->getName() ?>
-                            </li>
-                            <li class="list-group-item">
-                                <b class="pull-left">Email:</b>&nbsp;<?= $contact->getEmail() ?>
-                            </li>
-                            <li class="list-group-item">
-                                <b class="pull-left">Mobile:</b>&nbsp;<?= $contact->getMobile() ?>
-                            </li>
-                            <li class="list-group-item">
-                                <b class="pull-left">Subject:</b>&nbsp;<?= $contact->getSubject() ?>
+                                <?= $testimonial->getContent() ?>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-6">
                         <ul class="list-group">
                             <li class="list-group-item list-header text-center">
-                                Messsage
+                                Image
                             </li>
                             <li class="list-group-item">
-                                <?= $contact->getMessage() ?>
+                                <img src="<?= asset_url() . "files/testimonial/small/" . $testimonial->getImage() ?>" class="img-responsive"/>
                             </li>
                         </ul>
                     </div>

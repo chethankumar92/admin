@@ -25,6 +25,7 @@ class AdminUser extends CI_Model {
      * Constants
      */
     const TABLE = "admin_user";
+    const TABLE_STATUS = "admin_user_status";
     const TABLE_SESSION = "admin_user_session";
 
     /**
@@ -238,6 +239,25 @@ class AdminUser extends CI_Model {
             $this->$key = $value;
         }
         return TRUE;
+    }
+
+    public static function getStatuses($austid = 0) {
+        $db = &get_instance()->db;
+
+        $result = $db->query("SELECT * FROM " . self::TABLE_STATUS . " WHERE austid IN(?)", array(
+            is_array($austid) ? implode(",", $austid) : $austid
+        ));
+
+        if (!$result || $result->num_rows() < 1) {
+            return FALSE;
+        }
+        return $result->result();
+    }
+
+    public static function getStatusLabel($id, $row) {
+        return "<span class='label' style='background-color: " . $row["color"] . "'>"
+                . "<i class='" . $row["icon"] . "'></i>" . $row["status"] .
+                "</span>";
     }
 
 }

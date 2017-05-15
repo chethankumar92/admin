@@ -7,12 +7,23 @@ class AdminUsers extends MY_Controller {
     public function index() {
         $this->load->setTitle("Manage Admin Users");
         $this->load->setDescription("Manage admin user details");
-        $this->load->addScripts("modules/admin_user");
+
+        $this->load->addPlugins("bootstrap/js/bootbox", "js", 10);
+        $this->load->addPlugins("selectpicker/js/bootstrap-select", "js", 10);
+        $this->load->addPlugins("selectpicker/css/bootstrap-select", "css", 10);
         $this->load->addPlugins("datatables/jquery.dataTables", "js", 10);
-        $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 10);
+        $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 12);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "css", 10);
+
+        $this->load->addScripts("modules/admin_user");
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+
         $this->load->template('admin_user/manage', array(
-            "render_url" => site_url(self::class . "/render")
+            "render_url" => site_url(self::class . "/render"),
+            "status_action" => site_url(self::class . "/change_status"),
+            "status_method" => "post",
+            "statuses" => AdminUser::getStatuses()
         ));
     }
 
@@ -35,7 +46,7 @@ class AdminUsers extends MY_Controller {
 
         $this->load->model('AdminUser', 'admin_user', TRUE);
         $this->admin_user->setId($id);
-        if (!$this->admin_user->getAusid()) {
+        if ($this->admin_user->getAusid() == 4) {
             redirect(self::class);
         }
 
@@ -123,7 +134,6 @@ class AdminUsers extends MY_Controller {
         if (!$this->form_validation->run()) {
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
-                "type" => "danger",
                 "errors" => $this->form_validation->error_array(),
                 "message" => "Invalid data!"
             )))->_display();
@@ -132,6 +142,15 @@ class AdminUsers extends MY_Controller {
 
         $this->load->model('AdminUser', 'admin_user', TRUE);
         $this->admin_user->setId($this->input->post("id", TRUE));
+        if ($this->admin_user->getAusid() == 4) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "errors" => $this->form_validation->error_array(),
+                "message" => "Deleted admin user cannot be edited!"
+            )))->_display();
+            exit;
+        }
+
         $this->admin_user->setFirst_name($this->input->post("first-name", TRUE));
         $this->admin_user->setLast_name($this->input->post("last-name", TRUE));
         $this->admin_user->setEmail($this->input->post("email", TRUE));
@@ -160,31 +179,48 @@ class AdminUsers extends MY_Controller {
             redirect('404');
         }
 
+        $this->load->model("AdminUser", "admin_user", TRUE);
+
         $this->load->library("SSP_lib", NULL, "ssp");
         $this->load->database();
 
         $this->ssp->setTable('admin_user');
         $this->ssp->setPrimary_key('auid');
+        $this->ssp->setJoin_query(' FROM admin_user AS au LEFT JOIN admin_user_status AS aus ON au.ausid = aus.ausid');
+
+        $status_formatter = function($id, $row) {
+            return AdminUser::getStatusLabel($id, $row);
+        };
+        $action_formatter = function($id, $row) {
+            return $this->load->view('admin_user/action', array("id" => $id, "row" => $row), TRUE);
+        };
 
         $i = 0;
         $columns = array(
-            array('db' => 'auid', 'dt' => $i++),
-            array('db' => 'first_name', 'dt' => $i++),
-            array('db' => 'last_name', 'dt' => $i++),
-            array('db' => 'email', 'dt' => $i++),
-            array('db' => 'phone', 'dt' => $i++),
-            array('db' => 'mobile', 'dt' => $i++),
-            array('db' => 'created_auid', 'dt' => $i++),
-            array('db' => 'updated_auid', 'dt' => $i++),
-            array('db' => 'created_time', 'dt' => $i++),
-            array('db' => 'updated_time', 'dt' => $i++)
+            array('db' => 'au.auid', 'field' => 'auid', 'dt' => $i++),
+            array('db' => 'au.first_name', 'field' => 'first_name', 'dt' => $i++),
+            array('db' => 'au.last_name', 'field' => 'last_name', 'dt' => $i++),
+            array('db' => 'au.email', 'field' => 'email', 'dt' => $i++),
+            array('db' => 'au.phone', 'field' => 'phone', 'dt' => $i++),
+            array('db' => 'au.mobile', 'field' => 'mobile', 'dt' => $i++),
+            array('db' => 'aus.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
+            array('db' => 'au.created_auid', 'field' => 'created_auid', 'dt' => $i++),
+            array('db' => 'au.updated_auid', 'field' => 'updated_auid', 'dt' => $i++),
+            array('db' => 'au.created_time', 'field' => 'created_time', 'dt' => $i++),
+            array('db' => 'au.updated_time', 'field' => 'updated_time', 'dt' => $i++),
+            array('db' => 'au.auid', 'field' => 'auid', 'dt' => $i++, "formatter" => $action_formatter),
+            array('db' => 'aus.ausid', 'field' => 'ausid', 'dt' => $i++), // Extras
+            array('db' => 'aus.icon', 'field' => 'icon', 'dt' => $i++),
+            array('db' => 'aus.color', 'field' => 'color', 'dt' => $i++),
+            array('db' => 'aus.austid', 'field' => 'austid', 'dt' => $i++)
         );
         $this->ssp->setColumns($columns);
 
         $this->ssp->setDb($this->db);
         $this->ssp->setInput($this->input->post());
 
-        echo $this->ssp->render();
+        $this->output->set_output($this->ssp->render())->_display();
+        exit;
     }
 
     public function view($id) {
@@ -204,6 +240,39 @@ class AdminUsers extends MY_Controller {
         $this->load->template('admin_user/view', array(
             "admin_user" => $this->admin_user
         ));
+    }
+
+    public function change_status() {
+        if (!$this->input->is_ajax_request()) {
+            redirect('404');
+        }
+
+        $this->load->model('AdminUser', 'admin_user', TRUE);
+        $this->admin_user->setId($this->input->post("id"));
+        if (!$this->admin_user->getAusid()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Invalid admin user!"
+            )))->_display();
+            exit;
+        }
+
+        $this->admin_user->setAusid($this->input->post("status"));
+        $this->admin_user->setUpdated_auid($this->session->userdata("logged_in_auid"));
+        if (!$this->admin_user->update()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Failed to save data!"
+            )))->_display();
+            exit;
+        }
+
+        $this->output->set_output(json_encode(array(
+            "success" => TRUE,
+            "type" => "success",
+            "message" => "Data saved successfully!"
+        )))->_display();
+        exit;
     }
 
 }

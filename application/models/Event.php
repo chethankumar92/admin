@@ -37,6 +37,7 @@ class Event extends CI_Model {
      * Constants
      */
     const TABLE = "event";
+    const TABLE_STATUS = "event_status";
     const TABLE_GRADE = "event_grade";
     const TABLE_COST = "event_cost";
     const TABLE_POLICY = "event_policy";
@@ -364,6 +365,25 @@ class Event extends CI_Model {
             return FALSE;
         }
         return $result->result();
+    }
+
+    public static function getStatuses($estid = 0) {
+        $db = &get_instance()->db;
+
+        $result = $db->query("SELECT * FROM " . self::TABLE_STATUS . " WHERE estid IN(?)", array(
+            is_array($estid) ? implode(",", $estid) : $estid
+        ));
+
+        if (!$result || $result->num_rows() < 1) {
+            return FALSE;
+        }
+        return $result->result();
+    }
+
+    public static function getStatusLabel($id, $row) {
+        return "<span class='label' style='background-color: " . $row["color"] . "'>"
+                . "<i class='" . $row["icon"] . "'></i>" . $row["status"] .
+                "</span>";
     }
 
 }

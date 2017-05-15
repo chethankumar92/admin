@@ -8,14 +8,22 @@ class Events extends MY_Controller {
         $this->load->setTitle("Manage Events");
         $this->load->setDescription("Manage event details");
 
+        $this->load->addPlugins("bootstrap/js/bootbox", "js", 10);
+        $this->load->addPlugins("selectpicker/js/bootstrap-select", "js", 10);
+        $this->load->addPlugins("selectpicker/css/bootstrap-select", "css", 10);
         $this->load->addPlugins("datatables/jquery.dataTables", "js", 10);
-        $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 10);
+        $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 12);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "css", 10);
 
         $this->load->addScripts("modules/event");
 
+        $this->load->model('Event', 'event', TRUE);
+
         $this->load->template('event/manage', array(
-            "render_url" => site_url(self::class . "/render")
+            "render_url" => site_url(self::class . "/render"),
+            "status_action" => site_url(self::class . "/change_status"),
+            "status_method" => "post",
+            "statuses" => Event::getStatuses()
         ));
     }
 
@@ -53,7 +61,7 @@ class Events extends MY_Controller {
 
         $this->load->model('Event', 'event', TRUE);
         $this->event->setId($id);
-        if (!$this->event->getEsid()) {
+        if ($this->event->getEsid() == 3) {
             redirect(self::class);
         }
 
@@ -105,9 +113,8 @@ class Events extends MY_Controller {
             exit;
         }
 
-        $instance = &get_instance();
-        $instance->load->database();
-        $instance->db->trans_begin();
+        $this->load->database();
+        $this->db->trans_begin();
 
         $this->load->model('Event', 'event', TRUE);
         $this->event->setName($this->input->post("name", TRUE));
@@ -131,7 +138,7 @@ class Events extends MY_Controller {
         $this->event->setEsid(1);
         $this->event->setCreated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->event->insert()) {
-            $instance->db->trans_rollback();
+            $this->db->trans_rollback();
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
                 "message" => "Failed to save data!"
@@ -166,7 +173,7 @@ class Events extends MY_Controller {
                 $config['new_image'] = realpath(APPPATH . '../../files/event') . "/" . $folder . '/' . $image['file_name'];
                 $this->image_lib->initialize($config);
                 if (!$this->image_lib->resize()) {
-                    $instance->db->trans_rollback();
+                    $this->db->trans_rollback();
                     $this->output->set_output(json_encode(array(
                         "success" => FALSE,
                         "message" => "Failed to save image!",
@@ -187,7 +194,7 @@ class Events extends MY_Controller {
             $this->event_image->setName($image);
             $this->event_image->setDescription($image);
             if (!$this->event_image->insert()) {
-                $instance->db->trans_rollback();
+                $this->db->trans_rollback();
                 $this->output->set_output(json_encode(array(
                     "success" => FALSE,
                     "message" => "Failed to save data!"
@@ -196,7 +203,7 @@ class Events extends MY_Controller {
             }
         }
 
-        $instance->db->trans_commit();
+        $this->db->trans_commit();
         $this->output->set_output(json_encode(array(
             "success" => TRUE,
             "url" => site_url(self::class),
@@ -223,19 +230,26 @@ class Events extends MY_Controller {
         if (!$this->form_validation->run()) {
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
-                "type" => "danger",
                 "errors" => $this->form_validation->error_array(),
                 "message" => "Invalid data!"
             )))->_display();
             exit;
         }
 
-        $instance = &get_instance();
-        $instance->load->database();
-        $instance->db->trans_begin();
+        $this->load->database();
+        $this->db->trans_begin();
 
         $this->load->model('Event', 'event', TRUE);
         $this->event->setId($this->input->post("id", TRUE));
+        if ($this->event->getEsid() == 3) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "errors" => $this->form_validation->error_array(),
+                "message" => "Deleted event cannot be edited!"
+            )))->_display();
+            exit;
+        }
+
         $this->event->setName($this->input->post("name", TRUE));
         $this->event->setFrom_date($this->input->post("from-date", TRUE));
         $this->event->setTo_date($this->input->post("to-date", TRUE));
@@ -256,7 +270,7 @@ class Events extends MY_Controller {
         $this->event->setTerms_and_conditions($this->input->post("terms-and-conditions", TRUE));
         $this->event->setUpdated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->event->update()) {
-            $instance->db->trans_rollback();
+            $this->db->trans_rollback();
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
                 "message" => "Failed to save data!"
@@ -291,7 +305,7 @@ class Events extends MY_Controller {
                 $config['new_image'] = realpath(APPPATH . '../../files/event') . "/" . $folder . '/' . $image['file_name'];
                 $this->image_lib->initialize($config);
                 if (!$this->image_lib->resize()) {
-                    $instance->db->trans_rollback();
+                    $this->db->trans_rollback();
                     $this->output->set_output(json_encode(array(
                         "success" => FALSE,
                         "message" => "Failed to save image!",
@@ -306,7 +320,7 @@ class Events extends MY_Controller {
 
         $this->load->model('EventImage', 'event_image', TRUE);
         if (!$this->event_image->delete(NULL, $this->event->getId())) {
-            $instance->db->trans_rollback();
+            $this->db->trans_rollback();
             $this->output->set_output(json_encode(array(
                 "success" => FALSE,
                 "message" => "Failed to save images!"
@@ -321,7 +335,7 @@ class Events extends MY_Controller {
             $this->event_image->setName($image);
             $this->event_image->setDescription($image);
             if (!$this->event_image->insert()) {
-                $instance->db->trans_rollback();
+                $this->db->trans_rollback();
                 $this->output->set_output(json_encode(array(
                     "success" => FALSE,
                     "message" => "Failed to save data!"
@@ -330,7 +344,7 @@ class Events extends MY_Controller {
             }
         }
 
-        $instance->db->trans_commit();
+        $this->db->trans_commit();
         $this->output->set_output(json_encode(array(
             "success" => TRUE,
             "url" => site_url(self::class),
@@ -344,26 +358,41 @@ class Events extends MY_Controller {
             redirect('404');
         }
 
+        $this->load->model("Event", "event", TRUE);
+
         $this->load->library("SSP_lib", NULL, "ssp");
         $this->load->database();
 
         $this->ssp->setTable('event');
         $this->ssp->setPrimary_key('eid');
+        $this->ssp->setJoin_query(' FROM event AS e LEFT JOIN event_status AS es ON e.esid = es.esid');
+
+        $status_formatter = function($id, $row) {
+            return Event::getStatusLabel($id, $row);
+        };
+        $action_formatter = function($id, $row) {
+            return $this->load->view('event/action', array("id" => $id, "row" => $row), TRUE);
+        };
 
         $i = 0;
         $columns = array(
-            array('db' => 'eid', 'dt' => $i++),
-            array('db' => 'name', 'dt' => $i++),
-            array('db' => 'from_date', 'dt' => $i++),
-            array('db' => 'to_date', 'dt' => $i++),
-            array('db' => 'trek_distance', 'dt' => $i++),
-            array('db' => 'cost', 'dt' => $i++),
-            array('db' => 'egid', 'dt' => $i++),
-            array('db' => 'esid', 'dt' => $i++),
-            array('db' => 'created_auid', 'dt' => $i++),
-            array('db' => 'updated_auid', 'dt' => $i++),
-            array('db' => 'created_time', 'dt' => $i++),
-            array('db' => 'updated_time', 'dt' => $i++)
+            array('db' => 'e.eid', 'field' => 'eid', 'dt' => $i++),
+            array('db' => 'e.name', 'field' => 'name', 'dt' => $i++),
+            array('db' => 'e.from_date', 'field' => 'from_date', 'dt' => $i++),
+            array('db' => 'e.to_date', 'field' => 'to_date', 'dt' => $i++),
+            array('db' => 'e.trek_distance', 'field' => 'trek_distance', 'dt' => $i++),
+            array('db' => 'e.cost', 'field' => 'cost', 'dt' => $i++),
+            array('db' => 'e.egid', 'field' => 'egid', 'dt' => $i++),
+            array('db' => 'es.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
+            array('db' => 'e.created_auid', 'field' => 'created_auid', 'dt' => $i++),
+            array('db' => 'e.updated_auid', 'field' => 'updated_auid', 'dt' => $i++),
+            array('db' => 'e.created_time', 'field' => 'created_time', 'dt' => $i++),
+            array('db' => 'e.updated_time', 'field' => 'updated_time', 'dt' => $i++),
+            array('db' => 'e.eid', 'field' => 'eid', 'dt' => $i++, "formatter" => $action_formatter),
+            array('db' => 'es.esid', 'field' => 'esid', 'dt' => $i++), // Extras
+            array('db' => 'es.icon', 'field' => 'icon', 'dt' => $i++),
+            array('db' => 'es.color', 'field' => 'color', 'dt' => $i++),
+            array('db' => 'es.estid', 'field' => 'estid', 'dt' => $i++)
         );
         $this->ssp->setColumns($columns);
 
@@ -439,14 +468,13 @@ class Events extends MY_Controller {
             redirect('404');
         }
 
-        $instance = &get_instance();
-        $instance->load->database();
-        $instance->db->trans_begin();
+        $this->load->database();
+        $this->db->trans_begin();
 
         $image = $this->input->post('image');
         if (file_exists(realpath(APPPATH . '../../files/event') . "/" . $image["file_name"])) {
             if (!unlink(realpath(APPPATH . '../../files/event') . "/" . $image["file_name"])) {
-                $instance->db->trans_rollback();
+                $this->db->trans_rollback();
                 $this->output->set_output(json_encode(array(
                     "success" => FALSE,
                     "message" => "Failed to remove image!"
@@ -459,7 +487,7 @@ class Events extends MY_Controller {
             $this->load->model('EventImage', 'event_image', TRUE);
             $this->event_image->setId($image["file_id"]);
             if (!$this->event_image->delete($image["file_id"])) {
-                $instance->db->trans_rollback();
+                $this->db->trans_rollback();
                 $this->output->set_output(json_encode(array(
                     "success" => FALSE,
                     "message" => "Failed to remove image!"
@@ -471,7 +499,7 @@ class Events extends MY_Controller {
             foreach ($sizes as $folder) {
                 if (file_exists(realpath(APPPATH . '../../files/event') . "/" . $folder . "/" . $image["file_name"])) {
                     if (!unlink(realpath(APPPATH . '../../files/event') . "/" . $folder . "/" . $image["file_name"])) {
-                        $instance->db->trans_rollback();
+                        $this->db->trans_rollback();
                         $this->output->set_output(json_encode(array(
                             "success" => FALSE,
                             "message" => "Failed to remove image!"
@@ -482,12 +510,45 @@ class Events extends MY_Controller {
             }
         }
 
-        $instance->db->trans_commit();
+        $this->db->trans_commit();
         $this->output->set_output(json_encode(array(
             "success" => TRUE,
             "type" => "success",
             "url" => site_url(self::class),
             "message" => "Image removed successfully!"
+        )))->_display();
+        exit;
+    }
+
+    public function change_status() {
+        if (!$this->input->is_ajax_request()) {
+            redirect('404');
+        }
+
+        $this->load->model('Event', 'event', TRUE);
+        $this->event->setId($this->input->post("id"));
+        if (!$this->event->getEsid()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Invalid event!"
+            )))->_display();
+            exit;
+        }
+
+        $this->event->setEsid($this->input->post("status"));
+        $this->event->setUpdated_auid($this->session->userdata("logged_in_auid"));
+        if (!$this->event->update()) {
+            $this->output->set_output(json_encode(array(
+                "success" => FALSE,
+                "message" => "Failed to save data!"
+            )))->_display();
+            exit;
+        }
+
+        $this->output->set_output(json_encode(array(
+            "success" => TRUE,
+            "type" => "success",
+            "message" => "Data saved successfully!"
         )))->_display();
         exit;
     }

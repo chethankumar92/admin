@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="contact-manage-table" data-render-url="<?= $render_url ?>" class="table table-condensed table-bordered table-responsive table-hover">
+                <table id="contact-manage-table" data-render-url="<?= $render_url ?>" data-status-action="<?= $status_action ?>" data-status-method="<?= $status_method ?>" data-statuses='<?= json_encode($statuses) ?>' class="table table-condensed table-bordered table-responsive table-hover">
                     <thead>
                         <tr>
                             <th>Contact Id</th>
@@ -24,10 +24,12 @@
                             <th>Mobile</th>
                             <th>Subject</th>
                             <th>Message</th>
+                            <th>Status</th>
                             <th>Created By</th>
                             <th>Updated By</th>
                             <th>Date Of Creation</th>
                             <th>Date Of Update</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>

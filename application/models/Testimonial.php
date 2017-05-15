@@ -2,12 +2,14 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Page extends CI_Model {
+class Testimonial extends CI_Model {
 
-    private $pid;
-    private $title;
+    private $tid;
+    private $name;
+    private $designation;
+    private $image;
     private $content;
-    private $psid;
+    private $tsid;
     private $created_auid;
     private $updated_auid;
     private $created_time;
@@ -16,8 +18,8 @@ class Page extends CI_Model {
     /**
      * Constants
      */
-    const TABLE = "page";
-    const TABLE_STATUS = "page_status";
+    const TABLE = "testimonial";
+    const TABLE_STATUS = "testimonial_status";
 
     /**
      * Class constructor
@@ -27,29 +29,37 @@ class Page extends CI_Model {
     public function __construct($id = NULL) {
         parent::__construct();
         if ($id) {
-            $this->pid = $id;
+            $this->tid = $id;
             $this->loadById();
         }
     }
 
     function getId() {
-        return $this->pid;
+        return $this->tid;
     }
 
     function getPid() {
-        return $this->pid;
+        return $this->tid;
     }
 
-    function getTitle() {
-        return $this->title;
+    function getName() {
+        return $this->name;
+    }
+
+    function getDesignation() {
+        return $this->designation;
+    }
+
+    function getImage() {
+        return $this->image;
     }
 
     function getContent() {
         return $this->content;
     }
 
-    function getPsid() {
-        return $this->psid;
+    function getTsid() {
+        return $this->tsid;
     }
 
     function getCreated_auid() {
@@ -68,23 +78,31 @@ class Page extends CI_Model {
         return $this->updated_time;
     }
 
-    function setId($pid, $load = TRUE) {
-        $this->pid = $pid;
+    function setId($tid, $load = TRUE) {
+        $this->tid = $tid;
         if ($load) {
             $this->loadById();
         }
     }
 
-    function setTitle($title) {
-        $this->title = $title;
+    function setName($name) {
+        $this->name = $name;
+    }
+
+    function setDesignation($designation) {
+        $this->designation = $designation;
+    }
+
+    function setImage($image) {
+        $this->image = $image;
     }
 
     function setContent($content) {
         $this->content = $content;
     }
 
-    function setPsid($psid) {
-        $this->psid = $psid;
+    function setTsid($tsid) {
+        $this->tsid = $tsid;
     }
 
     function setCreated_auid($created_auid) {
@@ -104,8 +122,8 @@ class Page extends CI_Model {
     }
 
     public function loadById() {
-        $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE pid = ?", array(
-            $this->pid
+        $result = $this->db->query("SELECT * FROM " . self::TABLE . " WHERE tid = ?", array(
+            $this->tid
         ));
 
         if (!$result || $result->num_rows() < 1) {
@@ -120,29 +138,33 @@ class Page extends CI_Model {
     }
 
     public function insert() {
-        $result = $this->db->query("INSERT INTO " . self::TABLE . " (title, content, "
-                . "psid, created_auid) VALUES(?, ?, ?, ?)", array(
-            $this->title,
+        $result = $this->db->query("INSERT INTO " . self::TABLE . " (name, designation, content, "
+                . "image, tsid, created_auid) VALUES(?, ?, ?, ?, ?, ?)", array(
+            $this->name,
+            $this->designation,
             $this->content,
-            $this->psid,
+            $this->image,
+            $this->tsid,
             $this->created_auid
         ));
 
         if (!$result) {
             return FALSE;
         }
-        $this->pid = $this->db->insert_id();
+        $this->tid = $this->db->insert_id();
         return TRUE;
     }
 
     public function update() {
-        $result = $this->db->query("UPDATE " . self::TABLE . " SET title = ?, "
-                . "content = ?, psid = ?, updated_auid = ? WHERE pid = ?", array(
-            $this->title,
+        $result = $this->db->query("UPDATE " . self::TABLE . " SET name = ?, designation = ?, "
+                . "content = ?, image = ?, tsid = ?, updated_auid = ? WHERE tid = ?", array(
+            $this->name,
+            $this->designation,
             $this->content,
-            $this->psid,
+            $this->image,
+            $this->tsid,
             $this->updated_auid,
-            $this->pid
+            $this->tid
         ));
 
         if (!$result) {
@@ -151,11 +173,11 @@ class Page extends CI_Model {
         return TRUE;
     }
 
-    public static function getStatuses($pstid = 0) {
+    public static function getStatuses($tstid = 0) {
         $db = &get_instance()->db;
 
-        $result = $db->query("SELECT * FROM " . self::TABLE_STATUS . " WHERE pstid IN(?)", array(
-            is_array($pstid) ? implode(",", $pstid) : $pstid
+        $result = $db->query("SELECT * FROM " . self::TABLE_STATUS . " WHERE tstid IN(?)", array(
+            is_array($tstid) ? implode(",", $tstid) : $tstid
         ));
 
         if (!$result || $result->num_rows() < 1) {

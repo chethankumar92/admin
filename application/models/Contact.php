@@ -25,6 +25,7 @@ class Contact extends CI_Model {
      * Constants
      */
     const TABLE = "contact";
+    const TABLE_STATUS = "contact_status";
 
     /**
      * Class constructor
@@ -183,6 +184,25 @@ class Contact extends CI_Model {
             return FALSE;
         }
         return TRUE;
+    }
+
+    public static function getStatuses($cstid = 0) {
+        $db = &get_instance()->db;
+
+        $result = $db->query("SELECT * FROM " . self::TABLE_STATUS . " WHERE cstid IN(?)", array(
+            is_array($cstid) ? implode(",", $cstid) : $cstid
+        ));
+
+        if (!$result || $result->num_rows() < 1) {
+            return FALSE;
+        }
+        return $result->result();
+    }
+
+    public static function getStatusLabel($id, $row) {
+        return "<span class='label' style='background-color: " . $row["color"] . "'>"
+                . "<i class='" . $row["icon"] . "'></i>" . $row["status"] .
+                "</span>";
     }
 
 }

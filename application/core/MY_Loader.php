@@ -41,12 +41,15 @@ class MY_Loader extends CI_Loader {
             'slimScroll/jquery.slimscroll.min',
             'fastclick/fastclick',
             'parsley/parsley',
+            'ladda/js/spin',
+            'ladda/js/ladda',
             'bootstrap-notify/bootstrap-notify.min'
         ),
         "css" => array(
             'bootstrap/css/bootstrap.min',
             'iCheck/square/blue',
-            'parsley/parsley'
+            'parsley/parsley',
+            'ladda/css/ladda-themeless.min'
         ),
         "scss" => array()
     );

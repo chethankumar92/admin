@@ -21,6 +21,9 @@ $(document).ready(function (e) {
 $(document).on("submit", "form[data-parsley-validate]", function (e) {
     e.preventDefault();
 
+    var l = Ladda.create($(this).find('button[type=submit]')[0]);
+    l.start();
+
     var data = new FormData($(this)[0]);
     $.ajax({
         url: $(this).attr("action"),
@@ -43,6 +46,9 @@ $(document).on("submit", "form[data-parsley-validate]", function (e) {
                     }
                 });
             }
+        },
+        complete: function () {
+            l.stop();
         }
     });
 });
