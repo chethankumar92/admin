@@ -135,7 +135,6 @@ class Pages extends MY_Controller {
 
         $this->page->setTitle($this->input->post("title", TRUE));
         $this->page->setContent($this->input->post("content", TRUE));
-        $this->page->setPsid(2);
         $this->page->setUpdated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->page->update()) {
             $this->output->set_output(json_encode(array(
@@ -164,14 +163,21 @@ class Pages extends MY_Controller {
         $this->load->database();
 
         $this->ssp->setTable('page');
-        $this->ssp->setPrimary_key('pid');
-        $this->ssp->setJoin_query(' FROM page AS p LEFT JOIN page_status AS ps ON p.psid = ps.psid');
+        $this->ssp->setPrimary_key('p.pid');
+        $this->ssp->setJoin_query('FROM page AS p LEFT JOIN page_status AS ps ON p.psid = ps.psid '
+                . 'LEFT JOIN admin_user AS au1 ON p.created_auid = au1.auid LEFT JOIN admin_user AS au2 ON p.updated_auid = au2.auid');
 
         $status_formatter = function($id, $row) {
             return Page::getStatusLabel($id, $row);
         };
         $action_formatter = function($id, $row) {
             return $this->load->view('page/action', array("id" => $id, "row" => $row), TRUE);
+        };
+        $created_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(AdminUsers::class . "/view/" . $id) . "' target='_blank'>" . trim($row["created_user_first_name"] . " " . $row["created_user_last_name"]) . "</a>";
+        };
+        $updated_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(AdminUsers::class . "/view/" . $id) . "' target='_blank'>" . trim($row["updated_user_first_name"] . " " . $row["updated_user_last_name"]) . "</a>";
         };
 
         $i = 0;
@@ -180,15 +186,19 @@ class Pages extends MY_Controller {
             array('db' => 'p.title', 'field' => 'title', 'dt' => $i++),
             array('db' => 'p.content', 'field' => 'content', 'dt' => $i++),
             array('db' => 'ps.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
-            array('db' => 'p.created_auid', 'field' => 'created_auid', 'dt' => $i++),
-            array('db' => 'p.updated_auid', 'field' => 'updated_auid', 'dt' => $i++),
+            array('db' => 'p.created_auid', 'field' => 'created_auid', 'dt' => $i++, "formatter" => $created_user_formatter),
+            array('db' => 'p.updated_auid', 'field' => 'updated_auid', 'dt' => $i++, "formatter" => $updated_user_formatter),
             array('db' => 'p.created_time', 'field' => 'created_time', 'dt' => $i++),
             array('db' => 'p.updated_time', 'field' => 'updated_time', 'dt' => $i++),
             array('db' => 'p.pid', 'field' => 'pid', 'dt' => $i++, "formatter" => $action_formatter),
             array('db' => 'ps.psid', 'field' => 'psid', 'dt' => $i++), // Extras
             array('db' => 'ps.icon', 'field' => 'icon', 'dt' => $i++),
             array('db' => 'ps.color', 'field' => 'color', 'dt' => $i++),
-            array('db' => 'ps.pstid', 'field' => 'pstid', 'dt' => $i++)
+            array('db' => 'ps.pstid', 'field' => 'pstid', 'dt' => $i++),
+            array('db' => 'au1.first_name', 'field' => 'created_user_first_name', 'as' => 'created_user_first_name', 'dt' => $i++),
+            array('db' => 'au1.last_name', 'field' => 'created_user_last_name', 'as' => 'created_user_last_name', 'dt' => $i++),
+            array('db' => 'au2.first_name', 'field' => 'updated_user_first_name', 'as' => 'updated_user_first_name', 'dt' => $i++),
+            array('db' => 'au2.last_name', 'field' => 'updated_user_last_name', 'as' => 'updated_user_last_name', 'dt' => $i++)
         );
         $this->ssp->setColumns($columns);
 

@@ -32,12 +32,24 @@ $(document).on("submit", "form[data-parsley-validate]", function (e) {
         processData: false,
         type: $(this).attr("method"),
         success: function (response) {
-            var result = JSON.parse(response);
-            if (result.success) {
-                window.location.href = result.url;
-            } else {
-                $.notify(result.message, {
-                    type: result.type || "error",
+            try {
+                var result = JSON.parse(response);
+                if (result.success) {
+                    window.location.href = result.url;
+                } else {
+                    $.notify(result.message, {
+                        type: result.type || "error",
+                        allow_dismiss: true,
+                        showProgressbar: false,
+                        placement: {
+                            from: "bottom",
+                            align: "right"
+                        }
+                    });
+                }
+            } catch (exception) {
+                $.notify("You are logged out of the portal!<br>Please use a new tab to login and try again.", {
+                    type: "warning",
                     allow_dismiss: true,
                     showProgressbar: false,
                     placement: {

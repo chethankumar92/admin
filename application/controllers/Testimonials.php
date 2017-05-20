@@ -229,7 +229,6 @@ class Testimonials extends MY_Controller {
         }
 
         $this->testimonial->setImage($uploaded);
-        $this->testimonial->setTsid(1);
         $this->testimonial->setCreated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->testimonial->update()) {
             $this->output->set_output(json_encode(array(
@@ -258,14 +257,21 @@ class Testimonials extends MY_Controller {
         $this->load->database();
 
         $this->ssp->setTable('testimonial');
-        $this->ssp->setPrimary_key('tid');
-        $this->ssp->setJoin_query(' FROM testimonial AS t LEFT JOIN testimonial_status AS ts ON t.tsid = ts.tsid');
+        $this->ssp->setPrimary_key('t.tid');
+        $this->ssp->setJoin_query(' FROM testimonial AS t LEFT JOIN testimonial_status AS ts ON t.tsid = ts.tsid '
+                . 'LEFT JOIN admin_user AS au1 ON t.created_auid = au1.auid LEFT JOIN admin_user AS au2 ON t.updated_auid = au2.auid');
 
         $status_formatter = function($id, $row) {
             return Testimonial::getStatusLabel($id, $row);
         };
         $action_formatter = function($id, $row) {
             return $this->load->view('testimonial/action', array("id" => $id, "row" => $row), TRUE);
+        };
+        $created_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(AdminUsers::class . "/view/" . $id) . "' target='_blank'>" . trim($row["created_user_first_name"] . " " . $row["created_user_last_name"]) . "</a>";
+        };
+        $updated_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(AdminUsers::class . "/view/" . $id) . "' target='_blank'>" . trim($row["updated_user_first_name"] . " " . $row["updated_user_last_name"]) . "</a>";
         };
 
         $i = 0;
@@ -275,15 +281,19 @@ class Testimonials extends MY_Controller {
             array('db' => 't.designation', 'field' => 'designation', 'dt' => $i++),
             array('db' => 't.content', 'field' => 'content', 'dt' => $i++),
             array('db' => 'ts.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
-            array('db' => 't.created_auid', 'field' => 'created_auid', 'dt' => $i++),
-            array('db' => 't.updated_auid', 'field' => 'updated_auid', 'dt' => $i++),
+            array('db' => 't.created_auid', 'field' => 'created_auid', 'dt' => $i++, "formatter" => $created_user_formatter),
+            array('db' => 't.updated_auid', 'field' => 'updated_auid', 'dt' => $i++, "formatter" => $updated_user_formatter),
             array('db' => 't.created_time', 'field' => 'created_time', 'dt' => $i++),
             array('db' => 't.updated_time', 'field' => 'updated_time', 'dt' => $i++),
             array('db' => 't.tid', 'field' => 'tid', 'dt' => $i++, "formatter" => $action_formatter),
             array('db' => 'ts.tsid', 'field' => 'tsid', 'dt' => $i++), // Extras
             array('db' => 'ts.icon', 'field' => 'icon', 'dt' => $i++),
             array('db' => 'ts.color', 'field' => 'color', 'dt' => $i++),
-            array('db' => 'ts.tstid', 'field' => 'tstid', 'dt' => $i++)
+            array('db' => 'ts.tstid', 'field' => 'tstid', 'dt' => $i++),
+            array('db' => 'au1.first_name', 'field' => 'created_user_first_name', 'as' => 'created_user_first_name', 'dt' => $i++),
+            array('db' => 'au1.last_name', 'field' => 'created_user_last_name', 'as' => 'created_user_last_name', 'dt' => $i++),
+            array('db' => 'au2.first_name', 'field' => 'updated_user_first_name', 'as' => 'updated_user_first_name', 'dt' => $i++),
+            array('db' => 'au2.last_name', 'field' => 'updated_user_last_name', 'as' => 'updated_user_last_name', 'dt' => $i++)
         );
         $this->ssp->setColumns($columns);
 

@@ -88,7 +88,7 @@ class AdminUsers extends MY_Controller {
         $this->admin_user->setEmail($this->input->post("email", TRUE));
         $this->admin_user->setPhone($this->input->post("phone", TRUE));
         $this->admin_user->setMobile($this->input->post("mobile", TRUE));
-        $this->admin_user->setAusid(1);
+        $this->admin_user->setAusid(2);
         $this->admin_user->setPassword($hasher->hash_password($password));
         $this->admin_user->setCreated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->admin_user->insert()) {
@@ -156,7 +156,6 @@ class AdminUsers extends MY_Controller {
         $this->admin_user->setEmail($this->input->post("email", TRUE));
         $this->admin_user->setPhone($this->input->post("phone", TRUE));
         $this->admin_user->setMobile($this->input->post("mobile", TRUE));
-        $this->admin_user->setAusid(1);
         $this->admin_user->setUpdated_auid($this->session->userdata("logged_in_auid"));
         if (!$this->admin_user->update()) {
             $this->output->set_output(json_encode(array(
@@ -185,14 +184,21 @@ class AdminUsers extends MY_Controller {
         $this->load->database();
 
         $this->ssp->setTable('admin_user');
-        $this->ssp->setPrimary_key('auid');
-        $this->ssp->setJoin_query(' FROM admin_user AS au LEFT JOIN admin_user_status AS aus ON au.ausid = aus.ausid');
+        $this->ssp->setPrimary_key('au.auid');
+        $this->ssp->setJoin_query('FROM admin_user AS au LEFT JOIN admin_user_status AS aus ON au.ausid = aus.ausid '
+                . 'LEFT JOIN admin_user AS au1 ON au.created_auid = au1.auid LEFT JOIN admin_user AS au2 ON au.updated_auid = au2.auid');
 
         $status_formatter = function($id, $row) {
             return AdminUser::getStatusLabel($id, $row);
         };
         $action_formatter = function($id, $row) {
             return $this->load->view('admin_user/action', array("id" => $id, "row" => $row), TRUE);
+        };
+        $created_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(self::class . "/view/" . $id) . "' target='_blank'>" . trim($row["created_user_first_name"] . " " . $row["created_user_last_name"]) . "</a>";
+        };
+        $updated_user_formatter = function ($id, $row) {
+            return "<a href='" . site_url(self::class . "/view/" . $id) . "' target='_blank'>" . trim($row["updated_user_first_name"] . " " . $row["updated_user_last_name"]) . "</a>";
         };
 
         $i = 0;
@@ -204,15 +210,19 @@ class AdminUsers extends MY_Controller {
             array('db' => 'au.phone', 'field' => 'phone', 'dt' => $i++),
             array('db' => 'au.mobile', 'field' => 'mobile', 'dt' => $i++),
             array('db' => 'aus.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
-            array('db' => 'au.created_auid', 'field' => 'created_auid', 'dt' => $i++),
-            array('db' => 'au.updated_auid', 'field' => 'updated_auid', 'dt' => $i++),
+            array('db' => 'au.created_auid', 'field' => 'created_auid', 'dt' => $i++, "formatter" => $created_user_formatter),
+            array('db' => 'au.updated_auid', 'field' => 'updated_auid', 'dt' => $i++, "formatter" => $updated_user_formatter),
             array('db' => 'au.created_time', 'field' => 'created_time', 'dt' => $i++),
             array('db' => 'au.updated_time', 'field' => 'updated_time', 'dt' => $i++),
             array('db' => 'au.auid', 'field' => 'auid', 'dt' => $i++, "formatter" => $action_formatter),
             array('db' => 'aus.ausid', 'field' => 'ausid', 'dt' => $i++), // Extras
             array('db' => 'aus.icon', 'field' => 'icon', 'dt' => $i++),
             array('db' => 'aus.color', 'field' => 'color', 'dt' => $i++),
-            array('db' => 'aus.austid', 'field' => 'austid', 'dt' => $i++)
+            array('db' => 'aus.austid', 'field' => 'austid', 'dt' => $i++),
+            array('db' => 'au1.first_name', 'field' => 'created_user_first_name', 'as' => 'created_user_first_name', 'dt' => $i++),
+            array('db' => 'au1.last_name', 'field' => 'created_user_last_name', 'as' => 'created_user_last_name', 'dt' => $i++),
+            array('db' => 'au2.first_name', 'field' => 'updated_user_first_name', 'as' => 'updated_user_first_name', 'dt' => $i++),
+            array('db' => 'au2.last_name', 'field' => 'updated_user_last_name', 'as' => 'updated_user_last_name', 'dt' => $i++)
         );
         $this->ssp->setColumns($columns);
 
