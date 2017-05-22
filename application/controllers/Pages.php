@@ -167,6 +167,9 @@ class Pages extends MY_Controller {
         $this->ssp->setJoin_query('FROM page AS p LEFT JOIN page_status AS ps ON p.psid = ps.psid '
                 . 'LEFT JOIN admin_user AS au1 ON p.created_auid = au1.auid LEFT JOIN admin_user AS au2 ON p.updated_auid = au2.auid');
 
+        $content_formatter = function($d, $row) {
+            return html_entity_decode($d);
+        };
         $status_formatter = function($id, $row) {
             return Page::getStatusLabel($id, $row);
         };
@@ -184,7 +187,7 @@ class Pages extends MY_Controller {
         $columns = array(
             array('db' => 'p.pid', 'field' => 'pid', 'dt' => $i++),
             array('db' => 'p.title', 'field' => 'title', 'dt' => $i++),
-            array('db' => 'p.content', 'field' => 'content', 'dt' => $i++),
+            array('db' => 'p.content', 'field' => 'content', 'dt' => $i++, "formatter" => $content_formatter),
             array('db' => 'ps.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
             array('db' => 'p.created_auid', 'field' => 'created_auid', 'dt' => $i++, "formatter" => $created_user_formatter),
             array('db' => 'p.updated_auid', 'field' => 'updated_auid', 'dt' => $i++, "formatter" => $updated_user_formatter),

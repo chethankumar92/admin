@@ -10,15 +10,6 @@ $(document).ready(function (e) {
             buttons: [
                 'copy', 'excel', 'pdf'
             ],
-            "aoColumnDefs": [{
-                    mRender: function (data, type, row) {
-                        var parser = new DOMParser();
-                        var dom = parser.parseFromString(data, 'text/html');
-                        return dom.body.textContent;
-                    },
-                    "aTargets": [2]
-                }
-            ],
             fnDrawCallback: function (oSettings) {
                 $('#page-manage-table .dropdown-toggle').dropdown();
             }
