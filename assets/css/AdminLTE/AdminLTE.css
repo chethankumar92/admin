@@ -2433,6 +2433,7 @@ a:focus {
 .nav-tabs-custom > .nav-tabs > li > a {
     color: #444;
     border-radius: 0;
+    box-shadow: none;
 }
 .nav-tabs-custom > .nav-tabs > li > a.text-muted {
     color: #999;
@@ -2449,6 +2450,7 @@ a:focus {
 .nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus,
 .nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
     border-color: transparent;
+    box-shadow: none;
 }
 .nav-tabs-custom > .nav-tabs > li.active {
     border-top-color: #0d87e9;
@@ -2457,6 +2459,7 @@ a:focus {
 .nav-tabs-custom > .nav-tabs > li.active:hover > a {
     background-color: #fff;
     color: #444;
+    box-shadow: none;
 }
 .nav-tabs-custom > .nav-tabs > li.active > a {
     border-top-color: transparent;

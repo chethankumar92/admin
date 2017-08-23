@@ -22,7 +22,7 @@
                                 <?= $page->getTitle() ?>
                             </li>
                             <li class="list-group-item">
-                                <?= $page->getContent() ?>
+                                <?= html_entity_decode($page->getContent()) ?>
                             </li>
                         </ul>
                     </div>

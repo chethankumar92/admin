@@ -60,7 +60,8 @@ class MY_Loader extends CI_Loader {
         $instance->admin_user->setId($instance->session->userdata('logged_in_auid'));
 
         $header = $this->view('header', array(
-            "logout_action" => site_url("logout/log_out"),
+            "logout_action" => site_url(Logout::class . "/log_out"),
+            "profile_url" => site_url(Profile::class),
             "logged_in_user" => $instance->admin_user
                 ), TRUE);
 

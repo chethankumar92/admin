@@ -7,7 +7,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Pages</h3>
+                <h3 class="box-title">Testimonials</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                         <i class="fa fa-minus"></i>
@@ -15,10 +15,10 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="testimonial-manage-table" data-render-url="<?= $render_url ?>" data-status-action="<?= $status_action ?>" data-status-method="<?= $status_method ?>" data-statuses='<?= json_encode($statuses) ?>' class="table table-condensed table-bordered table-responsive table-hover">
+                <table id="testimonial-manage-table" data-render-url="<?= $render_url ?>" data-status-action="<?= $status_action ?>" data-status-method="<?= $status_method ?>" data-statuses='<?= json_encode($statuses) ?>' data-status-key="tsid" class="table table-condensed table-bordered table-responsive table-hover">
                     <thead>
                         <tr>
-                            <th>Page Id</th>
+                            <th>Testimonial Id</th>
                             <th>Name</th>
                             <th>Designation</th>
                             <th>Content</th>

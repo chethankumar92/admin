@@ -68,89 +68,67 @@
                         <div class="form-group">
                             <label for="cost-includes" class="col-lg-2 control-label">Cost includes</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="cost-includes" placeholder="Cost includes">
-                                    <?= $event->getCost_includes() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="cost-includes" placeholder="Cost includes"><?= $event->getCost_includes() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="cost-excludes" class="col-lg-2 control-label">Cost excludes</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="cost-excludes" placeholder="Cost excludes">
-                                    <?= $event->getCost_excludes() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="cost-excludes" placeholder="Cost excludes"><?= $event->getCost_excludes() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tentative-schedule" class="col-lg-2 control-label">Tentative schedule</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="tentative-schedule" placeholder="Tentative schedule">
-                                    <?= $event->getTentative_schedule() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="tentative-schedule" placeholder="Tentative schedule"><?= $event->getTentative_schedule() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-lg-2 control-label">Description</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="description" placeholder="Description">
-                                    <?= $event->getDescription() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="description" placeholder="Description"><?= $event->getDescription() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="accommodation" class="col-lg-2 control-label">Accommodation</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="accommodation" placeholder="Accommodation">
-                                    <?= $event->getAccommodation() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="accommodation" placeholder="Accommodation"><?= $event->getAccommodation() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="transportation" class="col-lg-2 control-label">Transportation</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="transportation" placeholder="Transportation">
-                                    <?= $event->getTransportation() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="transportation" placeholder="Transportation"><?= $event->getTransportation() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="food" class="col-lg-2 control-label">Food</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="food" placeholder="Food">
-                                    <?= $event->getFood() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="food" placeholder="Food"><?= $event->getFood() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="things-to-carry" class="col-lg-2 control-label">Things to carry</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="things-to-carry" placeholder="Things to carry">
-                                    <?= $event->getThings_to_carry() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="things-to-carry" placeholder="Things to carry"><?= $event->getThings_to_carry() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="cancellation-policy" class="col-lg-2 control-label">Cancellation policy</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="cancellation-policy" placeholder="Cancellation policy">
-                                    <?= $event->getCancellation_policy() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="cancellation-policy" placeholder="Cancellation policy"><?= $event->getCancellation_policy() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="refund-policy" class="col-lg-2 control-label">Refund policy</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="refund-policy" placeholder="Refund policy">
-                                    <?= $event->getRefund_policy() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="refund-policy" placeholder="Refund policy"><?= $event->getRefund_policy() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="terms-and-conditions" class="col-lg-2 control-label">Terms and conditions</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="terms-and-conditions" placeholder="Terms and conditions">
-                                    <?= $event->getTerms_and_conditions() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="terms-and-conditions" placeholder="Terms and conditions"><?= $event->getTerms_and_conditions() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">

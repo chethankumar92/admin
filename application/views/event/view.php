@@ -40,121 +40,9 @@
                                 <b class="pull-left">Cost:</b>&nbsp;<?= $event->getCost() ?>
                             </li>
                             <li class="list-group-item">
-                                <b class="pull-left">Grade:</b>&nbsp;<?= $event->getEgid() ?>
+                                <b class="pull-left">Grade:</b>&nbsp;<?= $event->getGrade()->getName() ?>
                             </li>
                         </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Description
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getDescription() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Cost includes
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getCost_includes() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Cost excludes
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getCost_excludes() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Tentative schedule
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getTentative_schedule() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Accommodation
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getAccommodation() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Transportation
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getTransportation() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Food
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getFood() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Things to carry
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getThings_to_carry() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Cancellation policy
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getCancellation_policy() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Refund policy
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getRefund_policy() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <ul class="list-group">
-                            <li class="list-group-item list-header text-center">
-                                Terms and conditions
-                            </li>
-                            <li class="list-group-item">
-                                <?= $event->getTerms_and_conditions() ?>&nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item list-header text-center">
                                 Images
@@ -183,6 +71,98 @@
                                         <span class="sr-only">Next</span>
                                     </a>
                                 </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Description
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getDescription() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Cost includes
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCost_includes() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Cost excludes
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCost_excludes() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Tentative schedule
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getTentative_schedule() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Accommodation
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getAccommodation() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Transportation
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getTransportation() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Food
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getFood() ?>&nbsp;
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Things to carry
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getThings_to_carry() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Cancellation policy
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getCancellation_policy() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Refund policy
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getRefund_policy() ?>&nbsp;
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-header text-center">
+                                Terms and conditions
+                            </li>
+                            <li class="list-group-item">
+                                <?= $event->getTerms_and_conditions() ?>&nbsp;
                             </li>
                         </ul>
                     </div>

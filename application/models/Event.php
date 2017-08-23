@@ -34,6 +34,11 @@ class Event extends CI_Model {
     private $updated_time;
 
     /**
+     * Extra
+     */
+    private $grade;
+
+    /**
      * Constants
      */
     const TABLE = "event";
@@ -384,6 +389,20 @@ class Event extends CI_Model {
         return "<span class='label' style='background-color: " . $row["color"] . "'>"
                 . "<i class='" . $row["icon"] . "'></i>" . $row["status"] .
                 "</span>";
+    }
+
+    public function getGrade() {
+        if (!$this->grade) {
+            $this->loadGrade();
+        }
+        return $this->grade;
+    }
+
+    public function loadGrade() {
+        $instance = &get_instance();
+        $instance->load->model('EventGrade', 'event_grade');
+        $instance->event_grade->setId($this->egid);
+        $this->grade = $instance->event_grade;
     }
 
 }

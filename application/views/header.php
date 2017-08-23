@@ -111,7 +111,7 @@
                             <img src="<?= base_url() ?>/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                             <p>
                                 <?= $logged_in_user->getFirst_name() . " " . $logged_in_user->getLast_name() ?>
-                                <small>Member since Nov. 2012</small>
+                                <small>Member since <?= date("M, Y", strtotime($logged_in_user->getCreated_time())) ?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -132,7 +132,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="<?= $profile_url ?>" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
                                 <a href="#" class="btn btn-default btn-flat" id="logout" data-action="<?= $logout_action ?>" data-method="post">Sign out</a>

@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="event-manage-table" data-render-url="<?= $render_url ?>" data-status-action="<?= $status_action ?>" data-status-method="<?= $status_method ?>" data-statuses='<?= json_encode($statuses) ?>' class="table table-condensed table-bordered table-responsive table-hover">
+                <table id="event-manage-table" data-render-url="<?= $render_url ?>" data-status-action="<?= $status_action ?>" data-status-method="<?= $status_method ?>" data-statuses='<?= json_encode($statuses) ?>' data-status-key="esid" class="table table-condensed table-bordered table-responsive table-hover">
                     <thead>
                         <tr>
                             <th>Event Id</th>

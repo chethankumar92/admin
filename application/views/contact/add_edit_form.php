@@ -43,9 +43,7 @@
                         <div class="form-group">
                             <label for="message" class="col-lg-2 control-label">Message</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control" rows="3" name="message" placeholder="Message" required="">
-                                    <?= $contact->getMessage() ?>
-                                </textarea>
+                                <textarea class="form-control" rows="3" name="message" placeholder="Message" required=""><?= $contact->getMessage() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">

@@ -14,6 +14,16 @@ class Pages extends MY_Controller {
         $this->load->addPlugins("datatables/jquery.dataTables", "js", 10);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 12);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "css", 10);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.bootstrap", "js", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/css/buttons.bootstrap", "scss", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/dataTables.buttons", "js", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/css/buttons.dataTables", "scss", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.flash", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/jszip.min", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/vfs_fonts", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/pdfmake.min", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.html5", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.print", "js", 13);
 
         $this->load->addScripts("modules/page");
 

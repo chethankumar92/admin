@@ -14,7 +14,17 @@ class Events extends MY_Controller {
         $this->load->addPlugins("datatables/jquery.dataTables", "js", 10);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "js", 12);
         $this->load->addPlugins("datatables/dataTables.bootstrap", "css", 10);
-
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.bootstrap", "js", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/css/buttons.bootstrap", "scss", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/dataTables.buttons", "js", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/css/buttons.dataTables", "scss", 12);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.flash", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/jszip.min", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/vfs_fonts", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/pdfmake.min", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.html5", "js", 13);
+        $this->load->addPlugins("datatables/extensions/Buttons/js/buttons.print", "js", 13);
+        
         $this->load->addScripts("modules/event");
 
         $this->load->model('Event', 'event', TRUE);
@@ -366,6 +376,7 @@ class Events extends MY_Controller {
         $this->ssp->setTable('event');
         $this->ssp->setPrimary_key('e.eid');
         $this->ssp->setJoin_query('FROM event AS e LEFT JOIN event_status AS es ON e.esid = es.esid '
+                . 'LEFT JOIN event_grade AS eg ON e.egid = eg.egid '
                 . 'LEFT JOIN admin_user AS au1 ON e.created_auid = au1.auid LEFT JOIN admin_user AS au2 ON e.updated_auid = au2.auid');
 
         $status_formatter = function($id, $row) {
@@ -389,7 +400,7 @@ class Events extends MY_Controller {
             array('db' => 'e.to_date', 'field' => 'to_date', 'dt' => $i++),
             array('db' => 'e.trek_distance', 'field' => 'trek_distance', 'dt' => $i++),
             array('db' => 'e.cost', 'field' => 'cost', 'dt' => $i++),
-            array('db' => 'e.egid', 'field' => 'egid', 'dt' => $i++),
+            array('db' => 'eg.name', 'field' => 'grade', 'as' => 'grade', 'dt' => $i++),
             array('db' => 'es.name', 'field' => 'status', 'as' => 'status', 'dt' => $i++, "formatter" => $status_formatter),
             array('db' => 'e.created_auid', 'field' => 'created_auid', 'dt' => $i++, "formatter" => $created_user_formatter),
             array('db' => 'e.updated_auid', 'field' => 'updated_auid', 'dt' => $i++, "formatter" => $updated_user_formatter),

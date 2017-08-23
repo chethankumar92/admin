@@ -25,9 +25,7 @@
                         <div class="form-group">
                             <label for="content" class="col-lg-2 control-label">Content</label>
                             <div class="col-lg-10">
-                                <textarea class="form-control summernote" rows="3" name="content" placeholder="Content">
-                                    <?= $page->getContent() ?>
-                                </textarea>
+                                <textarea class="form-control summernote" rows="3" name="content" placeholder="Content"><?= $page->getContent() ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
